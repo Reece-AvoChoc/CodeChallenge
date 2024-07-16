@@ -10,16 +10,16 @@
     <div class="collapse navbar-collapse" [ngClass]="{'show': isNavbarOpen}" id="navbarNav">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/home">Home</a>
+          <a class="nav-link" routerLink="/home" routerLinkActive="active-link">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/about">About</a>
+          <a class="nav-link" routerLink="/about" routerLinkActive="active-link">About</a>
         </li>
         <li class="nav-item d-lg-none"> 
-          <a class="nav-link" routerLink="/about">Get in Touch</a> 
+          <a class="nav-link" routerLink="/about" routerLinkActive="active-link">Get in Touch</a> 
         </li>
       </ul>
-      <a class="nav-button ms-auto d-none d-lg-block" routerLink="/contact">Get in Touch</a> 
+      <a class="nav-button ms-auto d-none d-lg-block" routerLink="/about" >Get in Touch</a> 
     </div>
   </div>
 </nav>

@@ -18,16 +18,10 @@
 
 .navbar-light .navbar-nav .nav-link:hover{
     color: #808080; 
-    text-decoration: underline; 
-    text-underline-offset: 10px;
+    /* text-decoration: underline; 
+    text-underline-offset: 10px; */
 }
 
-navbar-light .navbar-nav .nav-link.active {
-    color: #808080; 
-    text-decoration: underline; 
-    text-underline-offset: 10px;
-    font-weight: bold;
-}
 
 .navbar-light .navbar-toggler {
     color: black;
@@ -54,6 +48,12 @@ navbar-light .navbar-nav .nav-link.active {
   padding: 10px;
 }
 
+.active-link {
+    font-weight: bold;
+    text-decoration: underline;
+    text-underline-offset: 10px;
+    text-decoration-thickness: 2px;
+}
 
 
 
