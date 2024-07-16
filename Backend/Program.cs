@@ -8,6 +8,10 @@ builder.Services.AddCors(options =>
         builder.WithOrigins("http://localhost:4200") // Adjust for your Angular frontend URL
                .AllowAnyHeader()
                .AllowAnyMethod();
+
+        builder.WithOrigins("http://localhost:7119")
+               .AllowAnyHeader()
+               .AllowAnyMethod();       
     });
 });
 
