@@ -9,16 +9,17 @@ import { AboutModel } from './about-us.model';
 })
 export class AboutPage {
   aboutData: AboutModel = {
-    id: "0",
+    id: '0',
     text: '',
   };
 
   constructor(private backendService: BackendService) {}
 
   ngOnInit() {
-    this.backendService.getAbout().subscribe((data) => {
-      this.aboutData = data;
-      console.log(this.aboutData.text);
+    this.backendService.getAbout().subscribe({
+      next: (res: AboutModel) => {
+        this.aboutData = res;
+      },
     });
   }
 }
