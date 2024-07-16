@@ -13,6 +13,25 @@
 	color: white; 
 }
 
+.left-align {
+    text-align: left;
+    padding-left: 100px;
+    padding-top: 100px;
+}
+.about-container{
+    	height: 60vh;
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-image: url('../src/assets/about.jpg'); 
+	display: flex;
+    flex-direction: column;
+	justify-content: center;
+ align-items: flex-start;
+	text-align: center;
+	color: white; 
+}
+
 .image h1 {
     margin: 0; 
     padding: 5px; 
@@ -66,5 +85,5 @@
 .nav-button:hover {
     background: #000; 
     color: #fff; 
-      text-decoration: none;
+    text-decoration: none;
 }
