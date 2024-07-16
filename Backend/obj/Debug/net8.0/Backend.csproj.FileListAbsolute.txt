@@ -31,3 +31,4 @@
 /Users/reece/Desktop/More_Code/Coding_Challenge/Backend/obj/Debug/net8.0/Backend.pdb
 /Users/reece/Desktop/More_Code/Coding_Challenge/Backend/obj/Debug/net8.0/Backend.genruntimeconfig.cache
 /Users/reece/Desktop/More_Code/Coding_Challenge/Backend/obj/Debug/net8.0/ref/Backend.dll
+/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/obj/Debug/net8.0/Backend.sourcelink.json
