@@ -1,1 +1,70 @@
 /* You can add global styles to this file, and also import other style files */
+.image {
+	height: 90vh;
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-image: url('../src/assets/guitar.jpg'); 
+	display: flex;
+    flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	color: white; 
+}
+
+.image h1 {
+    margin: 0; 
+    padding: 5px; 
+     text-transform: uppercase;
+}
+
+.image h2 {
+    margin: 0; 
+    padding: 10px; 
+        text-decoration: none;
+}
+
+
+.home-button {
+    background: transparent;
+    color: #fff;
+    display: inline-block;
+    padding: 18px 24px;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    border: 0;
+    border: 1px solid #fff;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 3%;
+      text-decoration: none;
+}
+
+.home-button:hover {
+    background: #fff; 
+    color: #000; 
+      text-decoration: none;
+}
+
+.nav-button {
+    background: transparent;
+    color: #000;
+    display: inline-block;
+    padding: 18px 24px;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    border: 0;
+    border: 1px solid #000;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+      text-decoration: none;
+}
+
+.nav-button:hover {
+    background: #000; 
+    color: #fff; 
+      text-decoration: none;
+}
