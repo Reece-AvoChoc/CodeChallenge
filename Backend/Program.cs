@@ -46,7 +46,7 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 
-// app.UseCors(); // Enable CORS
+app.UseCors(); // Enable CORS
 
 // var summaries = new[]
 // {

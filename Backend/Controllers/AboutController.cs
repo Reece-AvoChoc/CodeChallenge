@@ -15,10 +15,24 @@ namespace Backend.Controllers
         {
             var about = new About{
                 Id = 1,
-                Text = @"SPAR International licences independently owned and operated retailers and wholesalers who work together in partnership under the SPAR Brand to provide a high quality, value for money shopping experience for the communities we serve.
-SPAR International’s mission is to ensure that the brand SPAR remains the world’s leading voluntary food retail chain and that we continue to grow our brand, our presence and our partners by working together to enhance the competitiveness, productivity and profitability of our retail and wholesale partners worldwide.
-The country organisations licensed to operate the SPAR brand form the world’s leading voluntary food retail chain. The business started with one Dutch store in 1932 and now comprises more than 13,900 stores in over 48 countries on four continents. The development of the SPAR brand has been underpinned by a set of values that have guided the organisation since its establishment over 90 years ago. At the heart of these core values is the commitment of licensed SPAR independent entrepreneurs to collaborate in all areas of wholesale and retail to ensure we serve our local communities with passion while being authentic in all we do.",
-            };
+                Text = @"About Us
+Welcome to GuitarGrooveHub!
+At GuitarGrooveHub, we are passionate about all things guitar. Our mission is to inspire and support guitar enthusiasts of all levels, from beginners picking up their first guitar to seasoned musicians perfecting their craft. Here's what we're all about:
+
+Our Story
+GuitarGrooveHub was founded by a group of guitar enthusiasts who wanted to create a vibrant community for fellow guitar lovers. Our journey began with a simple idea: to provide a space where guitarists can learn, share, and grow together. Over the years, we've grown into a trusted resource for guitar players around the world.
+
+What We Offer
+Comprehensive Lessons: Our step-by-step lessons cover everything from basic chords and strumming patterns to advanced techniques and music theory. Whether you're just starting out or looking to refine your skills, we have something for everyone.
+Expert Tips and Tutorials: Learn from experienced guitarists and industry professionals. Our tutorials and tips are designed to help you overcome challenges and take your playing to the next level.
+Gear Reviews and Recommendations: Choosing the right gear can be overwhelming. Our in-depth reviews and recommendations will help you find the perfect guitar, amp, pedals, and accessories to suit your style and budget.
+Community and Support: Connect with fellow guitarists from around the globe. Our forums, social media channels, and live events provide a platform for you to share your experiences, ask questions, and get feedback.
+
+Our Philosophy
+We believe that playing the guitar is more than just a hobby; it's a lifelong journey of discovery and expression. At GuitarGrooveHub, we are committed to fostering a supportive and inclusive environment where everyone can thrive. We are here to celebrate your successes, guide you through challenges, and inspire you to keep playing.
+
+Join Us
+Whether you're picking up a guitar for the first time or looking to enhance your skills, GuitarGrooveHub is here to support you every step of the way. Join our community, explore our resources, and let your guitar journey begin!"};
         
             return await Task.FromResult(Ok(about));
         }
