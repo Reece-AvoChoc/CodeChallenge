@@ -23,9 +23,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
-app.UseCors(); // Enable CORS
+// app.UseCors(); // Enable CORS
 
 var summaries = new[]
 {
