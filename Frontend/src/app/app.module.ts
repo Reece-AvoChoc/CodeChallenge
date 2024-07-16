@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HomePage } from './pages/home/home.page';
@@ -15,11 +16,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [AppComponent, HomePage, AboutPage, NavbarComponent],
-  imports: [
-    BrowserModule,
-    RouterModule.forRoot(routes),
-    // Add other imported modules here
-  ],
+  imports: [BrowserModule, RouterModule.forRoot(routes), HttpClientModule],
+
   providers: [],
   bootstrap: [AppComponent],
 })

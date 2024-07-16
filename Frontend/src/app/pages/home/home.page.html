@@ -1,2 +1,14 @@
-<h1>This is the Home Page HTML</h1>
-  
+<div class="home-container">
+  <div class="overview-container">
+    <div *ngIf="overviewHeading">
+      <p class="overview-heading">{{ overviewHeading }}</p>
+    </div>
+    <div *ngIf="overviewSubheading">
+      <p class="overview-subheading">{{overviewSubheading}}</p>
+    </div>
+    <div class="see-projects-button" routerLink="/about">SEE OUR PROJECTS</div>
+  </div>
+  <div *ngIf="backgroundImageUrl" class="background-image-container">
+    <img [src]="backgroundImageUrl" alt="Background Image" />
+  </div>
+</div>
