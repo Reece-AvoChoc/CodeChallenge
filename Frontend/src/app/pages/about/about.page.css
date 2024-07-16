@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  height: 82vh;
+  margin-top: 20px;
+}
+
+.column {
+  flex: 1;
+  margin: 0 55px;
+  padding: 20px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.column h2 {
+  color: #333;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  font-family: "Arial", sans-serif;
+}
+
+.column.transparent {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.column.transparent h2 {
+  color: #333;
+  font-family: "Arial", sans-serif;
+}
+
+.column.transparent p {
+  color: #333;
+  font-family: "Arial", sans-serif;
+}
+
+.column p {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: "Arial", sans-serif;
+}

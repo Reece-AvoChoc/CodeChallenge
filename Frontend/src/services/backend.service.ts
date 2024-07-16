@@ -31,4 +31,40 @@ export class BackendService {
       responseType: 'text',
     });
   }
+
+  getBody(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/api/abouttext/getoverviewbody`, {
+      responseType: 'text',
+    });
+  }
+
+  getHeading(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/api/abouttext/getoverviewheading`, {
+      responseType: 'text',
+    });
+  }
+
+  getMissionHeading(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/api/abouttext/getmissionheading`, {
+      responseType: 'text',
+    });
+  }
+
+  getMissionBody(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/api/abouttext/getmissionbody`, {
+      responseType: 'text',
+    });
+  }
+
+  getTeamHeading(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/api/abouttext/getteamheading`, {
+      responseType: 'text',
+    });
+  }
+
+  getTeamBody(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/api/abouttext/getteambody`, {
+      responseType: 'text',
+    });
+  }
 }
