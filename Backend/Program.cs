@@ -68,15 +68,17 @@ app.MapGet("/userinfo/{id:int}", (int id) =>
 .WithOpenApi();
 
 // New endpoint for site images
-app.MapGet("/siteimages", () =>
+app.MapGet("/siteimages/{img}", (string img) =>
 {
-    var siteImages = new[]
+    var filePath = Path.Combine(app.Environment.WebRootPath, "images", $"{img}.jpg");
+    
+    if (!System.IO.File.Exists(filePath))
     {
-        "/images/image1.jpg",
-        "/images/image2.jpg",
-        "/images/image3.jpg"
-    };
-    return siteImages;
+        return Results.NotFound(new { message = "Image not found" });
+    }
+
+    var fileBytes = System.IO.File.ReadAllBytes(filePath);
+    return Results.File(fileBytes, "image/jpeg");
 })
 .WithName("GetSiteImages")
 .WithOpenApi();
