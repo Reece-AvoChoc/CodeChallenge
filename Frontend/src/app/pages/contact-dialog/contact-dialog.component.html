@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>Get in Touch</h2>
+<mat-dialog-content>
+  <form #contactForm="ngForm" (ngSubmit)="submitContactForm(contactForm.value)">
+    <div class="form-group">
+      <input
+        matInput
+        placeholder="Name"
+        type="text"
+        name="name"
+        ngModel
+        required
+      />
+    </div>
+    <div class="form-group">
+      <input
+        matInput
+        placeholder="Surname"
+        type="text"
+        name="surname"
+        ngModel
+        required
+      />
+    </div>
+    <div class="form-group">
+      <input
+        matInput
+        placeholder="Email"
+        type="email"
+        name="email"
+        ngModel
+        required
+      />
+    </div>
+    <div class="form-group">
+      <textarea
+        matInput
+        placeholder="Message"
+        name="message"
+        ngModel
+        required
+      ></textarea>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Cancel</button>
+  <button
+    mat-button
+    color="primary"
+    type="submit"
+    [disabled]="!contactForm.valid"
+  >
+    Submit
+  </button>
+</mat-dialog-actions>

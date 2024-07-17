@@ -21,13 +21,19 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
+              "src/assets",
               {
                 "glob": "**/*",
                 "input": "public"
+                
               }
             ],
             "styles": [
-              "src/styles.css"
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/assets/css/style.css",
+              "src/assets/css/namari-color.css",
+              "src/assets/css/font-awesome.min.css",
+              "src/assets/css/animate.css"
             ],
             "scripts": []
           },
@@ -85,12 +91,19 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/assets/css/style.css",
+              "src/assets/css/namari-color.css",
+              "src/assets/css/font-awesome.min.css",
+              "src/assets/css/animate.css"
             ],
             "scripts": []
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "cfb9d910-b159-4e5e-935c-a9e09cafbdc5"
   }
 }

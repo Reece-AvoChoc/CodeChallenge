@@ -1,0 +1,14 @@
+.form-group {
+  margin-bottom: 20px;
+}
+
+input.mat-input-element,
+textarea.mat-input-element {
+  background-color: transparent; /* Remove grey background */
+  border: 1px solid #ccc; /* Optional: Add border for better visibility */
+  width: 100%; /* Make inputs full-width */
+}
+
+.mat-dialog-content {
+  padding: 0 24px; /* Adjust content padding if needed */
+}
