@@ -46,7 +46,7 @@ export class GetInTouchPopupComponent {
 
   submitForm() {
     if (this.joinForm.invalid) {
-      this.showError = true;
+      this.markAllAsTouched();
       console.log("Form invalid");
       return;
     }
@@ -57,7 +57,7 @@ export class GetInTouchPopupComponent {
       Email: this.joinForm.value.email,
       request: this.joinForm.value.issue,
     };
-
+    this.isSubmitted = true;
     console.log("Form valid");
     this.backendService.createRequest(requestModel).subscribe({
       next: (response) => {
