@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-// using Backend.Models.DTO;
 using Backend.Models.Domain;
+using Backend.Models.DTO;
 
 namespace Backend.Controllers
 {
@@ -34,6 +34,21 @@ namespace Backend.Controllers
             };
 
             return await Task.FromResult(Ok(usr));
+        }
+
+        [HttpPost]
+        [Route("get-in-touch")]
+        public async Task<IActionResult> GetInTouch([FromBody] GetInTouch getInTouch)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Getting In Touch:");
+            Console.WriteLine(getInTouch.Name);
+            Console.WriteLine(getInTouch.Surname);
+            Console.WriteLine(getInTouch.Email);
+            Console.WriteLine(getInTouch.Request);
+            Console.WriteLine();
+
+            return await Task.FromResult(Ok("Thank you for getting in touch!"));
         }
 
         [HttpGet]
