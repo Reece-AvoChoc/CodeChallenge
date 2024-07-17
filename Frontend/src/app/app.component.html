@@ -1,6 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light nav-bar">
   <div class="container-fluid">
-    <!-- Fixed position container for logo and icon -->
     <div class="navbar-brand-container">
       <a class="navbar-brand" routerLink="/home">StrumFusion</a>
     </div>
@@ -15,14 +14,14 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/about" routerLinkActive="active-link">About</a>
         </li>
-        <li class="nav-item d-lg-none"> 
-          <a class="nav-link" routerLink="/about" routerLinkActive="active-link">Get in Touch</a> 
+        <li class="nav-item d-lg-none">
+          <button class="nav-link" (click)="openModal()">Get in Touch</button>
         </li>
       </ul>
-      <a class="nav-button ms-auto d-none d-lg-block" routerLink="/about" >Get in Touch</a> 
+      <button class="nav-button ms-auto d-none d-lg-block" (click)="openModal()">Get in Touch</button>
     </div>
   </div>
 </nav>
 
-<!-- Router Outlet for Dynamic Content -->
+<app-get-in-touch-popup [(isOpen)]="isModalOpen"></app-get-in-touch-popup>
 <router-outlet></router-outlet>

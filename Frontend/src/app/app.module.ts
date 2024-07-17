@@ -7,6 +7,7 @@ import { HomePage } from "./pages/home/home.page";
 import { AboutPage } from "./pages/about/about.page";
 import { provideHttpClient } from "@angular/common/http";
 import { ReactiveFormsModule } from "@angular/forms";
+import { GetInTouchPopupComponent } from "./components/get-in-touch-popup/get-in-touch-popup.component";
 
 const routes: Routes = [
   { path: "home", component: HomePage },
@@ -16,7 +17,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [AppComponent, HomePage, AboutPage],
-  imports: [BrowserModule, RouterModule.forRoot(routes), ReactiveFormsModule],
+  imports: [BrowserModule, RouterModule.forRoot(routes), ReactiveFormsModule, GetInTouchPopupComponent],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent],
 })

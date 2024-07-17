@@ -198,7 +198,7 @@
 .story-image {
     flex: 1;
     margin: 20px;
-    background-image: url('../src/assets/playing.jpg');
+    background-image: url('../src/assets/guitar.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -271,7 +271,7 @@
 }
 
 .learn-image {
-    background-image: url('../src/assets/record.jpg');
+    background-image: url('../src/assets/guitar.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
