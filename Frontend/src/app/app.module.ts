@@ -6,11 +6,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { HomePage } from './pages/home/home.page';
 import { AboutPage } from './pages/about/about.page';
+import { ErrorPage } from './errorpage/errorpage.component';
 import { NavbarComponent } from './navbar/navbar.component';
 
 const routes: Routes = [
   { path: 'home', component: HomePage },
   { path: 'about', component: AboutPage },
+  { path: 'error', component: ErrorPage },
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
 ];
 

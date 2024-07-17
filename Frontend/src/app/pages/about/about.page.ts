@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BackendService } from '../../../services/backend.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-about',
@@ -15,7 +16,7 @@ export class AboutPage implements OnInit {
   teamHeading: string | null = null;
   teamBody: string | null = null;
 
-  constructor(private backendService: BackendService) {}
+  constructor(private backendService: BackendService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadBackgroundImage();
@@ -38,6 +39,7 @@ export class AboutPage implements OnInit {
       },
       (error) => {
         console.error('Failed to load background image', error);
+        this.router.navigate(['/error']);
       }
     );
   }
@@ -49,6 +51,7 @@ export class AboutPage implements OnInit {
       },
       (error) => {
         console.error('Failed to load overview heading', error);
+        this.router.navigate(['/error']);
       }
     );
   }
@@ -60,6 +63,7 @@ export class AboutPage implements OnInit {
       },
       (error) => {
         console.error('Failed to load overview body', error);
+        this.router.navigate(['/error']);
       }
     );
   }
@@ -71,6 +75,7 @@ export class AboutPage implements OnInit {
       },
       (error) => {
         console.error('Failed to load Mission heading', error);
+        this.router.navigate(['/error']);
       }
     );
   }
@@ -82,6 +87,7 @@ export class AboutPage implements OnInit {
       },
       (error) => {
         console.error('Failed to load Mission Body', error);
+        this.router.navigate(['/error']);
       }
     );
   }
@@ -93,6 +99,7 @@ export class AboutPage implements OnInit {
       },
       (error) => {
         console.error('Failed to load Team heading', error);
+        this.router.navigate(['/error']);
       }
     );
   }
@@ -104,6 +111,7 @@ export class AboutPage implements OnInit {
       },
       (error) => {
         console.error('Failed to load Team Body', error);
+        this.router.navigate(['/error']);
       }
     );
   }

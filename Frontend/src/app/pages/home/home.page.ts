@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BackendService } from '../../../services/backend.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ export class HomePage implements OnInit {
   overviewHeading: string | null = null;
   overviewSubheading: string | null = null;
 
-  constructor(private backendService: BackendService) {}
+  constructor(private backendService: BackendService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadBackgroundImage();
@@ -30,6 +31,7 @@ export class HomePage implements OnInit {
       },
       (error) => {
         console.error('Failed to load background image', error);
+        this.router.navigate(['/error']);
       }
     );
   }
@@ -41,6 +43,7 @@ export class HomePage implements OnInit {
       },
       (error) => {
         console.error('Failed to load overview heading', error);
+        this.router.navigate(['/error']);
       }
     );
   }
@@ -52,6 +55,7 @@ export class HomePage implements OnInit {
       },
       (error) => {
         console.error('Failed to load overview heading', error);
+        this.router.navigate(['/error']);
       }
     );
   }
