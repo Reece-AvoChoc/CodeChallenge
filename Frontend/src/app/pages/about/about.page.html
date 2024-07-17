@@ -4,16 +4,16 @@
 
 <div style="margin: 50px;">
   <h1 class="main-heading">Welcome to <span class="highlight">StrumFusion</span></h1>
-  <p class="sub-heading">{{ subHeading }}</p>
+  <p class="sub-heading">{{ aboutData.subHeading }}</p>
   <div class="arrow-container">
     <div class="arrow"></div>
   </div>
   <div class="story-container">
     <div class="story-text">
-      <h3 class="story-heading">{{ storyHeading1 }}</h3>
-      <p>{{ storyText1 }}</p>
-      <h3 class="story-heading">{{ storyHeading2 }}</h3>
-      <p>{{ storyText2 }}</p>
+      <h3 class="story-heading">{{ aboutData.storyHeading1 }}</h3>
+      <p>{{ aboutData.storyText1 }}</p>
+      <h3 class="story-heading">{{ aboutData.storyHeading2 }}</h3>
+      <p>{{ aboutData.storyText2 }}</p>
     </div>
     <div class="story-image"></div>
   </div>
@@ -25,35 +25,35 @@
           <i class="fa fa-book styled-icon"></i>
           <strong>Comprehensive Lessons</strong>
         </div>
-        <p class="styled-p">{{ listItem1 }}</p>
+        <p class="styled-p">{{ aboutData.listItem1 }}</p>
       </li>
       <li>
         <div class="icon-text-container">
           <i class="fa fa-lightbulb styled-icon"></i>
           <strong>Tips and Tutorials</strong>
         </div>
-        <p class="styled-p">{{ listItem2 }}</p>
+        <p class="styled-p">{{ aboutData.listItem2 }}</p>
       </li>
       <li>
         <div class="icon-text-container">
           <i class="fa fa-star styled-icon"></i>
           <strong>Reviews</strong>
         </div>
-        <p class="styled-p">{{ listItem3 }}</p>
+        <p class="styled-p">{{ aboutData.listItem3 }}</p>
       </li>
       <li>
         <div class="icon-text-container">
           <i class="fa fa-users styled-icon"></i>
           <strong>Community and Support</strong>
         </div>
-        <p class="styled-p">{{ listItem4 }}</p>
+        <p class="styled-p">{{ aboutData.listItem4 }}</p>
       </li>
     </ul>
   </div>
   <div class="container">
     <div class="join-section">
       <h1 class="main-heading">Join the StrumFusion</h1>
-      <p class="sub-heading">{{ joinText }}</p>
+      <p class="sub-heading">{{ aboutData.joinText }}</p>
       <button class="learn-more" (click)="openModal()">Join Us</button>
 
       <!-- Modal structure -->
