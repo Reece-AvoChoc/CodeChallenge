@@ -23,9 +23,9 @@
   <div class="story-container">
     <div class="story-text">
       <h3 class="story-heading">{{ aboutData.storyHeading1 }}</h3>
-      <p>{{ aboutData.storyText1 }}</p>
+      <p class="styled-p">{{ aboutData.storyText1 }}</p>
       <h3 class="story-heading">{{ aboutData.storyHeading2 }}</h3>
-      <p>{{ aboutData.storyText2 }}</p>
+      <p class="styled-p">{{ aboutData.storyText2 }}</p>
     </div>
     <div class="story-image"></div>
   </div>
@@ -72,7 +72,11 @@
       <div class="modal" [ngClass]="{ show: isModalOpen }">
         <div class="modal-content">
           <span class="close" (click)="closeModal()">&times;</span>
-          <h2 class="main-heading">Join Us</h2>
+
+<h2 class="modal-heading">Join Us</h2>
+<p class="modal-description">Join our vibrant guitar community for exclusive content and tutorials. Whether you're a beginner or expert, explore your passion with us!</p>
+
+
           <form [formGroup]="joinForm" (ngSubmit)="submitForm()">
             <div class="input-container">
               <label class="input-label"  for="name">Name:</label>

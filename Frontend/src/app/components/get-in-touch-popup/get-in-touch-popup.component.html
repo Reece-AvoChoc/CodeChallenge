@@ -7,65 +7,57 @@
   <div class="modal-get-in-touch">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-heading">Get in Touch</h1>
-        <span class="close" (click)="closeModal()">&times;</span>
+      <h1 class="modal-heading">Get in Touch</h1>
+      <span class="close" (click)="closeModal()">&times;</span>
+    </div>
+     <p class="modal-description">We're here for your requests, issues, or just to chat about the strumfusion of guitars.</p>
+    <form [formGroup]="joinForm" (ngSubmit)="submitForm()">
+      <div class="input-container">
+        <label class="input-label" for="name">Name:</label>
+        <input type="text" id="name" formControlName="name" />
+        <div *ngIf="joinForm.get('name')?.invalid && joinForm.get('name')?.touched" class="error-message">
+          Name is required.
+        </div>
       </div>
-      <form [formGroup]="joinForm" (ngSubmit)="submitForm()">
-        <div class="input-container">
-          <label class="input-label" for="name">Name:</label>
-          <input type="text" id="name" formControlName="name" />
-          <div
-            *ngIf="joinForm.get('name')?.invalid && joinForm.get('name')?.touched"
-            class="error-message"
-          >
-            Name is required.
-          </div>
+    
+      <div class="input-container">
+        <label class="input-label" for="surname">Surname:</label>
+        <input type="text" id="surname" formControlName="surname" />
+        <div *ngIf="joinForm.get('surname')?.invalid && joinForm.get('surname')?.touched" class="error-message">
+          Surname is required.
         </div>
-
-        <div class="input-container">
-          <label class="input-label" for="surname">Surname:</label>
-          <input type="text" id="surname" formControlName="surname" />
-          <div
-            *ngIf="joinForm.get('surname')?.invalid && joinForm.get('surname')?.touched"
-            class="error-message"
-          >
-            Surname is required.
-          </div>
+      </div>
+    
+      <div class="input-container">
+        <label class="input-label" for="email">Email:</label>
+        <input type="email" id="email" formControlName="email" />
+        <div *ngIf="joinForm.get('email')?.invalid && joinForm.get('email')?.touched" class="error-message">
+          Valid email is required.
         </div>
-
-        <div class="input-container">
-          <label class="input-label" for="email">Email:</label>
-          <input type="email" id="email" formControlName="email" />
-          <div
-            *ngIf="joinForm.get('email')?.invalid && joinForm.get('email')?.touched"
-            class="error-message"
-          >
-            Valid email is required.
-          </div>
+      </div>
+    
+      <div class="input-container">
+        <label for="issue" class="input-label">Request / Issue</label>
+        <textarea id="issue" formControlName="issue" class="large-input"></textarea>
+        <div *ngIf="joinForm.get('issue')?.invalid && joinForm.get('issue')?.touched" class="error-message">
+          Request / Issue is required.
         </div>
-
-        <div class="input-container">
-          <label for="issue" class="input-label">Request / Issue</label>
-          <textarea id="issue" formControlName="issue" class="large-input"></textarea>
-          <div
-            *ngIf="joinForm.get('issue')?.invalid && joinForm.get('issue')?.touched"
-            class="error-message"
-          >
-            Request / Issue is required.
-          </div>
-        </div>
-
-        <div *ngIf="showError" class="error-message">
-          Please fill in all fields.
-        </div>
-
-        <button type="submit">Submit</button>
-      </form>
+      </div>
+    
+      <div *ngIf="showError" class="error-message">
+        Please fill in all fields.
+      </div>
+    
+      <button type="submit" >Submit</button>
+    </form>
     </div>
   </div>
 </div>
 
+<div class="overlay" [ngClass]="{ show: isSubmitted }" [ngStyle]="{ display: isSubmitted ? 'block' : 'none' }"></div>
+
 <div class="get-in-touch-popup" [ngClass]="{ show: isSubmitted }" [ngStyle]="{ display: isSubmitted ? 'block' : 'none' }">
+  <i class="fas fa-check-circle check-icon"></i>
   <h1 class="welcome-heading">Request Submitted</h1>
   <p class="sub-heading">StrumFusion will be in touch with you soon</p>
   <button (click)="closeGetInTouchPopup()">Close</button>

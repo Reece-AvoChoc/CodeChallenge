@@ -76,10 +76,16 @@ export class AboutPage {
     this.showError = false;
     console.log("Modal closed");
   }
+  markAllAsTouched() {
+    Object.keys(this.joinForm.controls).forEach((field) => {
+      const control = this.joinForm.get(field);
+      control?.markAsTouched({ onlySelf: true });
+    });
+  }
 
   submitForm() {
     if (this.joinForm.invalid) {
-      this.showError = true;
+      this.markAllAsTouched();
       console.log("Form invalid");
       return;
     }
