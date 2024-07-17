@@ -8,7 +8,6 @@ import { AboutModel } from "./about-us.model";
   templateUrl: "about.page.html",
 })
 export class AboutPage {
-  mainHeading: string = "StrumFusion";
   subHeading: string =
     "At StrumFusion, we are passionate about all things guitar. Our mission is to inspire and support guitar enthusiasts of all levels, from beginners picking up their first guitar to seasoned musicians perfecting their craft.";
   storyHeading1: string = "Our Story";
