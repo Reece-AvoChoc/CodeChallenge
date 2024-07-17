@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { BackendService } from "../../../services/backend.service";
+import { RequestModel } from "../../models/request.model";
 
 @Component({
   selector: "app-get-in-touch-popup",
@@ -14,6 +15,8 @@ import { BackendService } from "../../../services/backend.service";
 export class GetInTouchPopupComponent {
   @Input() isOpen = false;
   @Output() isOpenChange = new EventEmitter<boolean>();
+
+  model?: RequestModel;
 
   name: string = "";
   surname: string = "";
@@ -33,6 +36,13 @@ export class GetInTouchPopupComponent {
       email: ["", [Validators.required, Validators.email]],
       issue: ["", Validators.required],
     });
+
+    this.model = {
+      Name: "",
+      Surname: "",
+      Email: "",
+      request: "",
+    };
   }
 
   submitForm() {
