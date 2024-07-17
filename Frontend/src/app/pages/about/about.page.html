@@ -2,8 +2,18 @@
   <h1 class="left-align">ABOUT US</h1>
 </div>
 
-<div style="margin: 50px;">
-  <h1 class="main-heading">Welcome to <span class="highlight">StrumFusion</span></h1>
+<div *ngIf="dataError" class="error-404">
+  <h1>404 - Data Not Found</h1>
+  <p>
+    Sorry, we couldn't fetch the data you're looking for. Please try again
+    later.
+  </p>
+</div>
+
+<div *ngIf="!dataError" style="margin: 50px">
+  <h1 class="main-heading">
+    Welcome to <span class="highlight">StrumFusion</span>
+  </h1>
   <p class="sub-heading">{{ aboutData.subHeading }}</p>
   <div class="arrow-container">
     <div class="arrow"></div>
@@ -65,7 +75,10 @@
             <div class="input-container">
               <label for="name">Name:</label>
               <input type="text" id="name" formControlName="name" />
-              <div *ngIf="joinForm.get('name')?.invalid && joinForm.get('name')?.touched" class="error-message">
+              <div
+                *ngIf="joinForm.get('name')?.invalid && joinForm.get('name')?.touched"
+                class="error-message"
+              >
                 Name is required.
               </div>
             </div>
@@ -73,7 +86,10 @@
             <div class="input-container">
               <label for="surname">Surname:</label>
               <input type="text" id="surname" formControlName="surname" />
-              <div *ngIf="joinForm.get('surname')?.invalid && joinForm.get('surname')?.touched" class="error-message">
+              <div
+                *ngIf="joinForm.get('surname')?.invalid && joinForm.get('surname')?.touched"
+                class="error-message"
+              >
                 Surname is required.
               </div>
             </div>
@@ -81,7 +97,10 @@
             <div class="input-container">
               <label for="email">Email:</label>
               <input type="email" id="email" formControlName="email" />
-              <div *ngIf="joinForm.get('email')?.invalid && joinForm.get('email')?.touched" class="error-message">
+              <div
+                *ngIf="joinForm.get('email')?.invalid && joinForm.get('email')?.touched"
+                class="error-message"
+              >
                 Valid email is required.
               </div>
             </div>
@@ -89,7 +108,10 @@
             <div class="input-container">
               <label for="password">Password:</label>
               <input type="password" id="password" formControlName="password" />
-              <div *ngIf="joinForm.get('password')?.invalid && joinForm.get('password')?.touched" class="error-message">
+              <div
+                *ngIf="joinForm.get('password')?.invalid && joinForm.get('password')?.touched"
+                class="error-message"
+              >
                 Password is required (minimum 6 characters).
               </div>
             </div>
@@ -107,7 +129,7 @@
       <div *ngIf="showWelcomePopup" class="welcome-popup-overlay">
         <div class="welcome-popup">
           <h1 class="welcome-heading">{{ welcomeMessage }}</h1>
-            <p class="sub-heading">{{ joinMessage }}</p>
+          <p class="sub-heading">{{ joinMessage }}</p>
           <button (click)="showWelcomePopup = false">Close</button>
         </div>
       </div>

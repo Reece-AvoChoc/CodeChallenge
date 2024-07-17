@@ -37,6 +37,7 @@ export class AboutPage {
   showWelcomePopup: boolean = false;
   welcomeMessage: string = '';
   joinMessage: string = '';
+  dataError: boolean = false; // Error state
 
   aboutData: AboutModel = {
     id: '0',
@@ -102,6 +103,11 @@ export class AboutPage {
     this.backendService.getAbout().subscribe({
       next: (res: AboutModel) => {
         this.aboutData = res;
+        this.dataError = false; // Reset error state on successful fetch
+      },
+      error: (error) => {
+        console.log(error);
+        this.dataError = true; // Set error state on fetch failure
       },
     });
   }
