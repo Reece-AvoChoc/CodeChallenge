@@ -18,7 +18,7 @@
     <div class="story-image"></div>
   </div>
   <div>
-    <h1 class="offer-heading">What We Offer</h1>
+    <h1 class="main-heading">What We Offer</h1>
     <ul class="styled-list">
       <li>
         <div class="icon-text-container">
@@ -60,7 +60,7 @@
       <div class="modal" [ngClass]="{ show: isModalOpen }">
         <div class="modal-content">
           <span class="close" (click)="closeModal()">&times;</span>
-          <h2 style="text-align: center;">Join Us</h2>
+          <h2 class="main-heading">Join Us</h2>
           <form [formGroup]="joinForm" (ngSubmit)="submitForm()">
             <div class="input-container">
               <label for="name">Name:</label>

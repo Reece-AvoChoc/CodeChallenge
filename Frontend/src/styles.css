@@ -178,12 +178,15 @@
     padding: 10px;
     display: flex;
     align-items: center;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .story-text {
     flex: 1;
     margin: 50px;
     text-align: justify;
+    flex: 1;
 }
 
 .story-heading {
@@ -206,7 +209,7 @@
 
 .image {
     width: 100%;
-    border-radius: 10px;
+  
 }
 
 .offer-heading {
@@ -404,8 +407,8 @@ button[type="submit"]:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-  z-index: 999; /* Below modal but above rest of the content */
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 999; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -436,6 +439,53 @@ button[type="submit"]:hover {
   width: 100%;
 }
 
+/* Portrait mode styles */
+@media (max-width: 768px) {
+
+    .main-heading {
+        font-size: 1.5rem;
+        margin: 5px;
+
+    }
+
+    .sub-heading {
+        font-size: 1rem;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .styled-list {
+        flex-direction: column;
+
+    }
+
+    .styled-list li {
+        flex: 1 1 100%;
+        margin: 10px 0;
+        width: 100%; 
+    }
+
+    .story-heading{
+        font-size: 1.5rem;
+    }
+    .story-container {
+        flex-direction: column;
+        margin-bottom: 40px;
+        padding: 0px;
+    }
+
+    .story-image {
+        order: 1; 
+    }
+
+    .story-text {
+        order: 0; 
+        margin: 30px;
+    }
+
+    .join-section {
+     padding: 0px;
+    }
+}
 
 
     
