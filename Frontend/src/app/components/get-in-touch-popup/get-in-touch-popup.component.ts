@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RequestModel } from '../../models/request.model';
 
 @Component({
   selector: 'app-get-in-touch-popup',
@@ -12,6 +13,17 @@ import { FormsModule } from '@angular/forms';
 export class GetInTouchPopupComponent {
   @Input() isOpen = false;
   @Output() isOpenChange = new EventEmitter<boolean>();
+
+  model?: RequestModel;
+
+  constructor() {
+    this.model = {
+      Name: '',
+      Surname: '',
+      Email: '',
+      request: '',
+    };
+  }
 
   closeModal() {
     this.isOpen = false;
