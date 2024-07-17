@@ -47,6 +47,49 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
+// List of user information
+var users = new List<UserInfo>
+{
+    new UserInfo(1, "John Doe", "john.doe@example.com", "Developer"),
+    new UserInfo(2, "Jane Smith", "jane.smith@example.com", "Designer"),
+    new UserInfo(3, "Mike Johnson", "mike.johnson@example.com", "Manager")
+};
+
+app.MapGet("/userinfo/{id:int}", (int id) =>
+{
+    var user = users.FirstOrDefault(u => u.Id == id);
+    if (user == null)
+    {
+        return Results.NotFound(new { message = "User not found" });
+    }
+    return Results.Ok(user);
+})
+.WithName("GetUserInfo")
+.WithOpenApi();
+
+// New endpoint for site images
+app.MapGet("/siteimages", () =>
+{
+    var siteImages = new[]
+    {
+        "/images/image1.jpg",
+        "/images/image2.jpg",
+        "/images/image3.jpg"
+    };
+    return siteImages;
+})
+.WithName("GetSiteImages")
+.WithOpenApi();
+
+// New endpoint for About Us page text
+app.MapGet("/aboutus", () =>
+{
+    var aboutUsText = "This is the About Us page. We are a company dedicated to providing the best services.";
+    return aboutUsText;
+})
+.WithName("GetAboutUs")
+.WithOpenApi();
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
@@ -54,4 +97,4 @@ record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
 
-//this is a test
+record UserInfo(int Id, string Name, string Email, string Role);
