@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms'; // Make sure FormsModule is imported for ngModel
 import { ContactDialogComponent } from '../contact-dialog/contact-dialog.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,7 @@ import { ContactDialogComponent } from '../contact-dialog/contact-dialog.compone
   styleUrls: [],
 })
 export class HomePage {
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, public httpClient: HttpClient) {}
 
   openContactDialog(): void {
     const dialogRef = this.dialog.open(ContactDialogComponent, {

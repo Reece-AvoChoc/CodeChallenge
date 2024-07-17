@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Get in Touch</h2>
-<mat-dialog-content>
-  <form #contactForm="ngForm" (ngSubmit)="submitContactForm(contactForm.value)">
+<form #contactForm="ngForm" (ngSubmit)="submitContactForm(contactForm.value)">
+  <mat-dialog-content>
     <div class="form-group">
       <input
         matInput
@@ -40,16 +40,17 @@
         required
       ></textarea>
     </div>
-  </form>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="closeDialog()">Cancel</button>
-  <button
-    mat-button
-    color="primary"
-    type="submit"
-    [disabled]="!contactForm.valid"
-  >
-    Submit
-  </button>
-</mat-dialog-actions>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button
+      mat-button
+      color="primary"
+      type="submit"
+      [disabled]="!contactForm.valid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

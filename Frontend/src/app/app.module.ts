@@ -20,10 +20,10 @@ import { ModeComponent } from './pages/mode/mode.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ContactDialogComponent } from './pages/contact-dialog/contact-dialog.component';
 import { Error404Component } from './pages/error404/error404.component';
+import { provideHttpClient } from '@angular/common/http';
 
 const routes: Routes = [
   { path: 'home', component: HomePage },
-  { path: 'about', component: AboutPage },
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
   { path: '**', component: Error404Component }, // Wildcard route for 404
 ];
@@ -55,7 +55,11 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 
-  providers: [provideAnimationsAsync(), provideAnimationsAsync('noop')],
+  providers: [
+    provideAnimationsAsync(),
+    provideAnimationsAsync('noop'),
+    provideHttpClient(),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
