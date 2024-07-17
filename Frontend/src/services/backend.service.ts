@@ -3,16 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class BackendService {
-    private apiUrl = 'http://localhost:5198';
+  private apiUrl = 'http://localhost:5198';
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    getBackgroundImage(): Observable<Blob> {
-        return this.http.get(`${this.apiUrl}/api/home/backgroundImage`, {
-            responseType: 'blob',
-        });
-    }
+  getBackgroundImage(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/api/home/backgroundimage`, {
+      responseType: 'blob',
+    });
+  }
 }
