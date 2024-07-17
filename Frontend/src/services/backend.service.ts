@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AboutModel } from '../app/pages/about/about-us.model';
+import { RequestModel } from '../app/models/request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,5 +29,9 @@ export class BackendService {
 
   getHomePageMessage(): Observable<string> {
     return this.http.get(`${this.baseUrl}/home`, { responseType: 'text' });
+  }
+
+  createRequest(data: RequestModel): Observable<any> {
+    return this.http.post(`${this.baseUrl}/home/get-in-touch`, data, { responseType: 'text' });
   }
 }
