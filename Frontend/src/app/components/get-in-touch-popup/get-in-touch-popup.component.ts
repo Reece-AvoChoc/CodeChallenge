@@ -23,6 +23,7 @@ export class GetInTouchPopupComponent {
   email: string = "";
   issue: string = "";
   showError: boolean = false;
+  isSubmitted: boolean = false;
 
   joinForm: FormGroup;
 
@@ -53,6 +54,7 @@ export class GetInTouchPopupComponent {
     }
     console.log("Form valid");
 
+    this.isSubmitted = true;
     this.closeModal();
   }
 
@@ -60,6 +62,10 @@ export class GetInTouchPopupComponent {
     this.isOpen = false;
     this.isOpenChange.emit(this.isOpen);
     this.resetForm();
+  }
+
+  closeGetInTouchPopup() {
+    this.isSubmitted = false;
   }
 
   resetForm() {
