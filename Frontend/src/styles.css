@@ -198,7 +198,7 @@
 .story-image {
     flex: 1;
     margin: 20px;
-    background-image: url('../src/assets/guitar.jpg');
+    background-image: url('../src/assets/playing.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -368,6 +368,7 @@ button[type="submit"] {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+    width: 100%;
 }
 
 button[type="submit"]:hover {
