@@ -17,6 +17,16 @@ export class BackendService {
   }
 
   getAbout(): Observable<AboutModel> {
-    return this.http.get<AboutModel>(`${this.apiUrl}/about`);
+    return this.http.get<AboutModel>(`${this.baseUrl}/about`);
+  }
+
+  getImage(name: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/home/image`, {
+      params: { name },
+    });
+  }
+
+  getHomePageMessage(): Observable<string> {
+    return this.http.get(`${this.baseUrl}/home`, { responseType: 'text' });
   }
 }

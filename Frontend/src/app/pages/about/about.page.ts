@@ -36,9 +36,10 @@ export class AboutPage {
   constructor(private backendService: BackendService) {}
 
   ngOnInit() {
-    this.backendService.getAbout().subscribe((data) => {
-      this.aboutData = data;
-      console.log(this.aboutData.text);
+    this.backendService.getAbout().subscribe({
+      next: (res: AboutModel) => {
+        this.aboutData = res;
+      },
     });
   }
 }
