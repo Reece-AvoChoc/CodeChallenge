@@ -315,6 +315,59 @@
   }
 }
 
+.modal-get-in-touch {
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; 
+  background-color: rgba(0,0,0,0.4); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-header {
+    border-bottom: none;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    position: relative;
+}
+
+.modal-heading {
+    text-align: center;
+    font-weight: bold;
+    flex: 1;
+    margin-bottom: 0px;
+}
+
+.large-input {
+  height: 8rem;
+  width: 100%;
+  padding: 10px;
+  margin-top: 0px;
+  border-radius: 5px;
+  border: 1px solid black;
+  margin-bottom: 0px;
+}
+.label{
+    width: 110px;
+      background: #fff;
+      top:20px;
+}
+.input-label {
+  position: relative;
+  display: inline-block;
+  left: 10px;
+  background: #fff;
+  padding: 0 5px;
+  background: #fff;
+  top:20px;
+  z-index: 1;
+}
 .modal-content {
   background-color: #fefefe;
   padding: 30px;
@@ -363,12 +416,14 @@ input {
 button[type="submit"] {
   margin-top: 20px;
   padding: 10px;
-  background-color: #78150F;
+background: linear-gradient( #4B0A07, #78150F);
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-    width: 100%;
+  width: 100%;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 button[type="submit"]:hover {
@@ -377,7 +432,6 @@ button[type="submit"]:hover {
 
 .input-container {
   position: relative;
-  margin-bottom: 20px;
 }
 
 .error-message {
@@ -446,6 +500,12 @@ button[type="submit"]:hover {
     .main-heading {
         font-size: 1.5rem;
         margin: 5px;
+
+    }
+
+     .modal-heading {
+        font-size: 1.5rem;
+
 
     }
 

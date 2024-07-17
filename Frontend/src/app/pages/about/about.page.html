@@ -73,7 +73,7 @@
           <h2 class="main-heading">Join Us</h2>
           <form [formGroup]="joinForm" (ngSubmit)="submitForm()">
             <div class="input-container">
-              <label for="name">Name:</label>
+              <label class="input-label"  for="name">Name:</label>
               <input type="text" id="name" formControlName="name" />
               <div
                 *ngIf="joinForm.get('name')?.invalid && joinForm.get('name')?.touched"
@@ -84,7 +84,7 @@
             </div>
 
             <div class="input-container">
-              <label for="surname">Surname:</label>
+              <label class="input-label" for="surname">Surname:</label>
               <input type="text" id="surname" formControlName="surname" />
               <div
                 *ngIf="joinForm.get('surname')?.invalid && joinForm.get('surname')?.touched"
@@ -95,7 +95,7 @@
             </div>
 
             <div class="input-container">
-              <label for="email">Email:</label>
+              <label class="input-label" for="email">Email:</label>
               <input type="email" id="email" formControlName="email" />
               <div
                 *ngIf="joinForm.get('email')?.invalid && joinForm.get('email')?.touched"
@@ -106,7 +106,7 @@
             </div>
 
             <div class="input-container">
-              <label for="password">Password:</label>
+              <label class="input-label" for="password">Password:</label>
               <input type="password" id="password" formControlName="password" />
               <div
                 *ngIf="joinForm.get('password')?.invalid && joinForm.get('password')?.touched"

@@ -1,32 +1,68 @@
 <div
- class="modal"
   tabindex="-1"
   role="dialog"
   [ngClass]="{ show: isOpen }"
   [ngStyle]="{ display: isOpen ? 'block' : 'none' }"
 >
-  <div class="modal" role="document"></div>
-
-     <div class="modal-content">
+  <div class="modal-get-in-touch">
+    <div class="modal-content">
       <div class="modal-header">
-        <h5 class="mainHeading">Get in Touch</h5>
-        <button
-          type="button"
-          class="close"
-          (click)="closeModal()"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <h1 class="modal-heading">Get in Touch</h1>
+          <span class="close" (click)="closeModal()">&times;</span>
       </div>
-      <div class="modal-body">
-        <!-- Your form or content goes here -->
-        <p>Contact us via email or phone!</p>
-      </div>
-      <div class="modal-footer">
+   <form [formGroup]="joinForm" (ngSubmit)="submitForm()">
+            <div class="input-container">
+              <label class="input-label" for="name">Name:</label>
+              <input type="text" id="name" formControlName="name" />
+              <div
+                *ngIf="joinForm.get('name')?.invalid && joinForm.get('name')?.touched"
+                class="error-message"
+              >
+                Name is required.
+              </div>
+            </div>
 
-        <button type="submit" >Submit</button>
-      </div>
+            <div class="input-container">
+              <label class="input-label" for="surname">Surname:</label>
+              <input type="text" id="surname" formControlName="surname" />
+              <div
+                *ngIf="joinForm.get('surname')?.invalid && joinForm.get('surname')?.touched"
+                class="error-message"
+              >
+                Surname is required.
+              </div>
+            </div>
+
+            <div class="input-container">
+              <label class="input-label" for="email">Email:</label>
+              <input type="email" id="email" formControlName="email" />
+              <div
+                *ngIf="joinForm.get('email')?.invalid && joinForm.get('email')?.touched"
+                class="error-message"
+              >
+                Valid email is required.
+              </div>
+            </div>
+
+            <div class="input-container">
+              <label for="issue" class="input-label">Request / Issue</label>
+              <textarea id="issue" formControlName="issue" class="large-input"></textarea>
+              <div
+                *ngIf="joinForm.get('issue')?.invalid && joinForm.get('issue')?.touched"
+                class="error-message"
+              >
+                Request / Issue is required.
+              </div>
+            </div>
+
+            <div *ngIf="showError" class="error-message">
+              Please fill in all fields.
+            </div>
+
+            <button type="submit">Submit</button>
+          </form>
+
     </div>
   </div>
+</div>
 

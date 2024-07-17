@@ -1,20 +1,58 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { CommonModule } from "@angular/common";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { BackendService } from "../../../services/backend.service";
 
 @Component({
-  selector: 'app-get-in-touch-popup',
+  selector: "app-get-in-touch-popup",
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './get-in-touch-popup.component.html',
-  styleUrl: './get-in-touch-popup.component.css',
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  templateUrl: "./get-in-touch-popup.component.html",
+  styleUrl: "./get-in-touch-popup.component.css",
 })
 export class GetInTouchPopupComponent {
   @Input() isOpen = false;
   @Output() isOpenChange = new EventEmitter<boolean>();
 
+  name: string = "";
+  surname: string = "";
+  email: string = "";
+  issue: string = "";
+  showError: boolean = false;
+
+  joinForm: FormGroup;
+
+  constructor(
+    private backendService: BackendService,
+    private formBuilder: FormBuilder
+  ) {
+    this.joinForm = this.formBuilder.group({
+      name: ["", Validators.required],
+      surname: ["", Validators.required],
+      email: ["", [Validators.required, Validators.email]],
+      issue: ["", Validators.required],
+    });
+  }
+
+  submitForm() {
+    if (this.joinForm.invalid) {
+      this.showError = true;
+      console.log("Form invalid");
+      return;
+    }
+    console.log("Form valid");
+
+    this.closeModal();
+  }
+
   closeModal() {
     this.isOpen = false;
     this.isOpenChange.emit(this.isOpen);
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.joinForm.reset();
   }
 }
