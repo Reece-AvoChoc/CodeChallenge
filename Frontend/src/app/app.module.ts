@@ -8,11 +8,13 @@ import { HomePage } from './pages/home/home.page';
 import { AboutPage } from './pages/about/about.page';
 import { ErrorPage } from './errorpage/errorpage.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ContactFormComponent } from './contact-form/contact-form.component';
 
 const routes: Routes = [
   { path: 'home', component: HomePage },
   { path: 'about', component: AboutPage },
   { path: 'error', component: ErrorPage },
+  { path: 'form', component: ContactFormComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
 ];
 
