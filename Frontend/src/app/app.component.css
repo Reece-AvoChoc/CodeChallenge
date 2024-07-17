@@ -22,6 +22,10 @@
     text-underline-offset: 10px; */
 }
 
+.navbar-brand {
+    font-weight: bold;
+}
+
 
 .navbar-light .navbar-toggler {
     color: black;
