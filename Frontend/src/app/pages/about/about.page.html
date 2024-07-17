@@ -1,62 +1,116 @@
 <div class="about-container">
-    <h1 class="left-align">ABOUT US</h1>
+  <h1 class="left-align">ABOUT US</h1>
 </div>
 
 <div style="margin: 50px;">
-    <h1 class="main-heading">Welcome to <span class="highlight">{{ mainHeading }}</span></h1>
-    <p class="sub-heading">{{ subHeading }}</p>
-    <div class="arrow-container">
-        <div class="arrow"></div>
+  <h1 class="main-heading">Welcome to <span class="highlight">{{ mainHeading }}</span></h1>
+  <p class="sub-heading">{{ subHeading }}</p>
+  <div class="arrow-container">
+    <div class="arrow"></div>
+  </div>
+  <div class="story-container">
+    <div class="story-text">
+      <h3 class="story-heading">{{ storyHeading1 }}</h3>
+      <p>{{ storyText1 }}</p>
+      <h3 class="story-heading">{{ storyHeading2 }}</h3>
+      <p>{{ storyText2 }}</p>
     </div>
-    <div class="story-container">
-        <div class="story-text">
-            <h3 class="story-heading">{{ storyHeading1 }}</h3>
-            <p>{{ storyText1 }}</p>
-            <h3 class="story-heading">{{ storyHeading2 }}</h3>
-            <p>{{ storyText2 }}</p>
+    <div class="story-image"></div>
+  </div>
+  <div>
+    <h1 class="offer-heading">What We Offer</h1>
+    <ul class="styled-list">
+      <li>
+        <div class="icon-text-container">
+          <i class="fa fa-book styled-icon"></i>
+          <strong>Comprehensive Lessons</strong>
         </div>
-        <div class="story-image">
+        <p class="styled-p">{{ listItem1 }}</p>
+      </li>
+      <li>
+        <div class="icon-text-container">
+          <i class="fa fa-lightbulb styled-icon"></i>
+          <strong>Tips and Tutorials</strong>
         </div>
+        <p class="styled-p">{{ listItem2 }}</p>
+      </li>
+      <li>
+        <div class="icon-text-container">
+          <i class="fa fa-star styled-icon"></i>
+          <strong>Reviews</strong>
         </div>
-        <div>
-        <h1 class="offer-heading">What We Offer</h1>
-        <ul class="styled-list">
-            <li>
-                <div class="icon-text-container">
-                <i class="fa fa-book styled-icon"></i>
-                <strong>Comprehensive Lessons</strong></div>
-                <p class="styled-p">{{listItem1}}</p>
-            </li>
-            <li>
-                <div class="icon-text-container">
-                <i class="fa fa-lightbulb styled-icon"></i>
-                <strong>Tips and Tutorials</strong>
-                </div>
-                <p class="styled-p">{{listItem2}}</p>
-            </li>
-            <li>
-                <div class="icon-text-container">
-                <i class="fa fa-star styled-icon"></i>
-                <strong>Reviews</strong>
-                </div>
-                <p class="styled-p">{{listItem3}}</p>
-            </li>
-            <li>        
-                <div class="icon-text-container">
-                <i class="fa fa-users styled-icon"></i>
-                <strong>Community and Support</strong>
-                </div>
-                <p class="styled-p">{{listItem4}}</p>
-            </li>
-        </ul>
-    </div>
-    <div class="container">
+        <p class="styled-p">{{ listItem3 }}</p>
+      </li>
+      <li>
+        <div class="icon-text-container">
+          <i class="fa fa-users styled-icon"></i>
+          <strong>Community and Support</strong>
+        </div>
+        <p class="styled-p">{{ listItem4 }}</p>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
     <div class="join-section">
-        <h1 class="main-heading">Join the StrumFusion</h1>
-        <p class="sub-heading">{{joinText}}</p>
-        <button class="learn-more">Learn More</button>
+      <h1 class="main-heading">Join the StrumFusion</h1>
+      <p class="sub-heading">{{ joinText }}</p>
+      <button class="learn-more" (click)="openModal()">Join Us</button>
+
+      <!-- Modal structure -->
+      <div class="modal" [ngClass]="{ show: isModalOpen }">
+        <div class="modal-content">
+          <span class="close" (click)="closeModal()">&times;</span>
+          <h2 style="text-align: center;">Join Us</h2>
+          <form [formGroup]="joinForm" (ngSubmit)="submitForm()">
+            <div class="input-container">
+              <label for="name">Name:</label>
+              <input type="text" id="name" formControlName="name" />
+              <div *ngIf="joinForm.get('name')?.invalid && joinForm.get('name')?.touched" class="error-message">
+                Name is required.
+              </div>
+            </div>
+
+            <div class="input-container">
+              <label for="surname">Surname:</label>
+              <input type="text" id="surname" formControlName="surname" />
+              <div *ngIf="joinForm.get('surname')?.invalid && joinForm.get('surname')?.touched" class="error-message">
+                Surname is required.
+              </div>
+            </div>
+
+            <div class="input-container">
+              <label for="email">Email:</label>
+              <input type="email" id="email" formControlName="email" />
+              <div *ngIf="joinForm.get('email')?.invalid && joinForm.get('email')?.touched" class="error-message">
+                Valid email is required.
+              </div>
+            </div>
+
+            <div class="input-container">
+              <label for="password">Password:</label>
+              <input type="password" id="password" formControlName="password" />
+              <div *ngIf="joinForm.get('password')?.invalid && joinForm.get('password')?.touched" class="error-message">
+                Password is required (minimum 6 characters).
+              </div>
+            </div>
+
+            <div *ngIf="showError" class="error-message">
+              Please fill in all fields.
+            </div>
+
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Welcome Popup -->
+      <div *ngIf="showWelcomePopup" class="welcome-popup-overlay">
+        <div class="welcome-popup">
+          <h1 class="welcome-heading">{{ welcomeMessage }}</h1>
+            <p class="sub-heading">{{ joinMessage }}</p>
+          <button (click)="showWelcomePopup = false">Close</button>
+        </div>
+      </div>
     </div>
-    <!-- <div class="learn-image">
-    </div> -->
-    </div>
-    </div>
+  </div>
+</div>
