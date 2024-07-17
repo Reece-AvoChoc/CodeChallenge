@@ -16,8 +16,6 @@ export class GetInTouchPopupComponent {
   @Input() isOpen = false;
   @Output() isOpenChange = new EventEmitter<boolean>();
 
-  model?: RequestModel;
-
   name: string = "";
   surname: string = "";
   email: string = "";
@@ -37,13 +35,6 @@ export class GetInTouchPopupComponent {
       email: ["", [Validators.required, Validators.email]],
       issue: ["", Validators.required],
     });
-
-    this.model = {
-      Name: "",
-      Surname: "",
-      Email: "",
-      request: "",
-    };
   }
 
   markAllAsTouched() {
@@ -55,13 +46,27 @@ export class GetInTouchPopupComponent {
 
   submitForm() {
     if (this.joinForm.invalid) {
-      this.markAllAsTouched();
+      this.showError = true;
       console.log("Form invalid");
       return;
     }
-    console.log("Form valid");
 
-    this.isSubmitted = true;
+    const requestModel: RequestModel = {
+      Name: this.joinForm.value.name,
+      Surname: this.joinForm.value.surname,
+      Email: this.joinForm.value.email,
+      request: this.joinForm.value.issue,
+    };
+
+    console.log("Form valid");
+    this.backendService.createRequest(requestModel).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
     this.closeModal();
   }
 
