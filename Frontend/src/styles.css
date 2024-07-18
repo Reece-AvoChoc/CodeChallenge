@@ -664,6 +664,37 @@ button[type="submit"]:hover {
 
 }
 
+.footer {
+  background-color: #0F110C;
+  padding: 20px 0;
+  text-align: center;
+  display: flex;
+  height: 20%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+}
+
+.social-icon {
+  color: white;
+  font-size: 24px;
+  margin: 0 10px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.social-icon:hover {
+  color: #78150F ;
+}
+
 /* Portrait mode styles */
 @media (max-width: 768px) {
 
