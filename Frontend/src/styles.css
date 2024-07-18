@@ -194,7 +194,7 @@
 .arrow-container {
     display: flex;
     justify-content: center;
-    margin: 20px;
+    margin: 50px;
 }
 
 .arrow {
@@ -240,7 +240,7 @@
     background: linear-gradient(to top, white, grey);
   border-radius: 10px;
     width: 80%;
-    height: 90%;
+    height: 80%;
 }
 
 .login-side h2 {
@@ -295,6 +295,7 @@
 .register-link {
     margin-top: 10px;
     text-align: center;
+    cursor: pointer;
 }
 
 .register-link a {
