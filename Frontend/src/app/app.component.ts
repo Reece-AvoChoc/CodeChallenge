@@ -8,11 +8,12 @@ import { Router, NavigationEnd } from "@angular/router";
 })
 export class AppComponent {
   title = "Frontend";
-
+  isDropdownOpen: boolean = false;
   isNavbarOpen = false;
   isModalOpen = false;
   showNavBar = true;
   showLogin = false;
+  userName = "John Doe";
 
   constructor(private router: Router) {
     this.router.events.subscribe((event) => {
@@ -20,6 +21,14 @@ export class AppComponent {
         this.showNavBar = event.url !== "/login" && event.url !== "/register";
       }
     });
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  closeDropdown() {
+    this.isDropdownOpen = false;
   }
 
   toggleNavbar() {
@@ -32,5 +41,13 @@ export class AppComponent {
 
   closeModal() {
     this.isModalOpen = false;
+  }
+
+  getUserInitials(): string {
+    const initials = this.userName
+      .split(" ")
+      .map((name) => name[0])
+      .join("");
+    return initials.toUpperCase();
   }
 }

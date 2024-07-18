@@ -164,6 +164,25 @@
     text-decoration: none;
 }
 
+.topbar {
+    background: transparent;
+    color: #000;
+    display: inline-block;
+    padding: 8.5px 24px;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    border: 0;
+    border: 1px solid #000;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+      display: flex;
+  align-items: center;
+    position: relative;
+
+}
+
 .nav-button:hover {
     background: #000; 
     color: #fff; 
@@ -298,6 +317,10 @@
     cursor: pointer;
 }
 
+.register-link:hover {
+    text-decoration: underline;
+}
+
 .register-link a {
     color: #007bff;
     text-decoration: none;
@@ -305,6 +328,58 @@
 
 .register-link a:hover {
     text-decoration: underline;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+    background: linear-gradient(to right, #4B0A07, #78150F);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 10px; 
+}
+
+.user-name {
+  font-size: 1em;
+  font-weight: normal;
+  color: #000;
+  margin-left: 10px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: linear-gradient(to right, #4B0A07, #78150F);
+  min-width: 100%; 
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+  padding: 20px;
+  z-index: 1;
+  top: 100%; 
+  left: 0;
+  color: white;
+  border-radius: 5px;
+}
+
+.show-dropdown {
+  display: block;
+}
+
+.logout-link {
+  margin-left: 10px; 
+  color: white; 
+  text-decoration: none; 
+}
+
+.logout-link:hover {
+  margin-left: 10px; 
+  color: white; 
+  text-decoration: none; 
 }
 
 
