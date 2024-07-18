@@ -5,50 +5,51 @@
             <h1 class="login-heading">StrumFusion</h1>
             <p class="sub-heading">Create your account to join StrumFusion</p>
             <form [formGroup]="joinForm" (ngSubmit)="submitForm()">
-              <div class="input-container">
-              <label  for="name">Name:</label>
-              <input type="text" id="name" formControlName="name" />
-              <div
-                *ngIf="joinForm.get('name')?.invalid && joinForm.get('name')?.touched"
-                class="error-message"
-              >
-                Name is required.
-              </div>
-            </div>
+                <div class="input-container">
+                    <label for="name" class="visually-hidden">Name:</label>
+                    <div class="icon-container">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="name" formControlName="name" placeholder="Name" />
+                    </div>
+                    <div *ngIf="joinForm.get('name')?.invalid && joinForm.get('name')?.touched" class="error-message">
+                        Name is required.
+                    </div>
+                </div>
 
-            <div class="input-container">
-              <label for="surname">Surname:</label>
-              <input type="text" id="surname" formControlName="surname" />
-              <div
-                *ngIf="joinForm.get('surname')?.invalid && joinForm.get('surname')?.touched"
-                class="error-message"
-              >
-                Surname is required.
-              </div>
-            </div>
+                <div class="input-container">
+                    <label for="surname" class="visually-hidden">Surname:</label>
+                    <div class="icon-container">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="surname" formControlName="surname" placeholder="Surname" />
+                    </div>
+                    <div *ngIf="joinForm.get('surname')?.invalid && joinForm.get('surname')?.touched" class="error-message">
+                        Surname is required.
+                    </div>
+                </div>
 
-            <div class="input-container">
-              <label for="email">Email:</label>
-              <input type="email" id="email" formControlName="email" />
-              <div
-                *ngIf="joinForm.get('email')?.invalid && joinForm.get('email')?.touched"
-                class="error-message"
-              >
-                Valid email is required.
-              </div>
-            </div>
+                <div class="input-container">
+                    <label for="email" class="visually-hidden">Email:</label>
+                    <div class="icon-container">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" formControlName="email" placeholder="Email" />
+                    </div>
+                    <div *ngIf="joinForm.get('email')?.invalid && joinForm.get('email')?.touched" class="error-message">
+                        Valid email is required.
+                    </div>
+                </div>
 
-            <div class="input-container">
-              <label for="password">Password:</label>
-              <input type="password" id="password" formControlName="password" />
-              <div
-                *ngIf="joinForm.get('password')?.invalid && joinForm.get('password')?.touched"
-                class="error-message"
-              >
-                Password is required (minimum 6 characters).
-              </div>
-            </div>
-                <button class="nav-button">register</button>
+                <div class="input-container">
+                    <label for="password" class="visually-hidden">Password:</label>
+                    <div class="icon-container">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" formControlName="password" placeholder="Password" />
+                    </div>
+                    <div *ngIf="joinForm.get('password')?.invalid && joinForm.get('password')?.touched" class="error-message">
+                        Password is required (minimum 6 characters).
+                    </div>
+                </div>
+
+                <button class="nav-button">Register</button>
             </form>
         </div>
     </div>
