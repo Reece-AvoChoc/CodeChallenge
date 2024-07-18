@@ -1,37 +1,37 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BackendService } from '../../../services/backend.service';
-import { AboutModel } from './about-us.model';
-import { Router } from '@angular/router';
+import { Component } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { BackendService } from "../../../services/backend.service";
+import { AboutModel } from "./about-us.model";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-about',
-  templateUrl: 'about.page.html',
+  selector: "app-about",
+  templateUrl: "about.page.html",
 })
 export class AboutPage {
   isModalOpen: boolean = false;
-  name: string = '';
-  surname: string = '';
-  email: string = '';
-  password: string = '';
+  name: string = "";
+  surname: string = "";
+  email: string = "";
+  password: string = "";
   showError: boolean = false;
   showWelcomePopup: boolean = false;
-  welcomeMessage: string = '';
-  joinMessage: string = '';
+  welcomeMessage: string = "";
+  joinMessage: string = "";
   dataError: boolean = false; // Error state
 
   aboutData: AboutModel = {
-    id: '0',
-    subHeading: '',
-    storyHeading1: '',
-    storyText1: '',
-    storyHeading2: '',
-    storyText2: '',
-    listItem1: '',
-    listItem2: '',
-    listItem3: '',
-    listItem4: '',
-    joinText: '',
+    id: "0",
+    subHeading: "",
+    storyHeading1: "",
+    storyText1: "",
+    storyHeading2: "",
+    storyText2: "",
+    listItem1: "",
+    listItem2: "",
+    listItem3: "",
+    listItem4: "",
+    joinText: "",
   };
 
   joinForm: FormGroup;
@@ -42,10 +42,10 @@ export class AboutPage {
     private router: Router
   ) {
     this.joinForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      surname: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      name: ["", Validators.required],
+      surname: ["", Validators.required],
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -56,7 +56,7 @@ export class AboutPage {
   closeModal() {
     this.isModalOpen = false;
     this.showError = false;
-    console.log('Modal closed');
+    console.log("Modal closed");
   }
   markAllAsTouched() {
     Object.keys(this.joinForm.controls).forEach((field) => {
@@ -68,13 +68,11 @@ export class AboutPage {
   submitForm() {
     if (this.joinForm.invalid) {
       this.markAllAsTouched();
-      console.log('Form invalid');
+      console.log("Form invalid");
       return;
     }
 
-    const fullName = `${this.name} ${this.surname}`;
-
-    this.welcomeMessage = 'Welcome to StrumFusion, John Doe!';
+    this.welcomeMessage = "Welcome to StrumFusion, John Doe!";
     this.joinMessage =
       "We're thrilled to have you on board. You're now part of a global community of guitar enthusiasts who share your passion for music. Get ready to learn, connect, and grow with us. The journey starts now!";
 
@@ -94,7 +92,7 @@ export class AboutPage {
       },
       error: (error) => {
         console.log(error);
-        this.router.navigate(['/not-found']); // Navigate to 404 on error
+        this.router.navigate(["/not-found"]); // Navigate to 404 on error
       },
     });
   }

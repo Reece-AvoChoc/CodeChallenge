@@ -1,0 +1,55 @@
+<div class="login-container">
+    <div class="image-side"></div>
+    <div class="login-side">
+        <div class="register-modal">
+            <h1 class="login-heading">StrumFusion</h1>
+            <p class="sub-heading">Create your account to join StrumFusion</p>
+            <form [formGroup]="joinForm" (ngSubmit)="submitForm()">
+              <div class="input-container">
+              <label  for="name">Name:</label>
+              <input type="text" id="name" formControlName="name" />
+              <div
+                *ngIf="joinForm.get('name')?.invalid && joinForm.get('name')?.touched"
+                class="error-message"
+              >
+                Name is required.
+              </div>
+            </div>
+
+            <div class="input-container">
+              <label for="surname">Surname:</label>
+              <input type="text" id="surname" formControlName="surname" />
+              <div
+                *ngIf="joinForm.get('surname')?.invalid && joinForm.get('surname')?.touched"
+                class="error-message"
+              >
+                Surname is required.
+              </div>
+            </div>
+
+            <div class="input-container">
+              <label for="email">Email:</label>
+              <input type="email" id="email" formControlName="email" />
+              <div
+                *ngIf="joinForm.get('email')?.invalid && joinForm.get('email')?.touched"
+                class="error-message"
+              >
+                Valid email is required.
+              </div>
+            </div>
+
+            <div class="input-container">
+              <label for="password">Password:</label>
+              <input type="password" id="password" formControlName="password" />
+              <div
+                *ngIf="joinForm.get('password')?.invalid && joinForm.get('password')?.touched"
+                class="error-message"
+              >
+                Password is required (minimum 6 characters).
+              </div>
+            </div>
+                <button class="nav-button">register</button>
+            </form>
+        </div>
+    </div>
+</div>
