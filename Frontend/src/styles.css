@@ -271,6 +271,7 @@
   text-align: center;
   color: black;
   overflow: hidden;
+  background: linear-gradient(to top, white, grey);
 }
 
 .error-404::before {
