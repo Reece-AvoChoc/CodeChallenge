@@ -1,2 +1,13 @@
 Backend/obj/
 Backend/bin/
+.vs/CodeChallenge/config/applicationhost.config
+.vs/CodeChallenge/DesignTimeBuild/.dtbcache.v2
+*.vsidx
+*.v2
+.vs/CodeChallenge/v17/.suo
+.vs/CodeChallenge/v17/.wsuo
+*.json
+.vs/ProjectEvaluation/codechallenge.metadata.v8.bin
+*.bin
+*.sqlite
+Backend/.vs/Backend/v17/.wsuo
