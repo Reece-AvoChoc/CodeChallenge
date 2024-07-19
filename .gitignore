@@ -11,3 +11,6 @@ Backend/bin/
 *.bin
 *.sqlite
 Backend/.vs/Backend/v17/.wsuo
+Backend/Migrations/
+Backend/.DS_Store/
+

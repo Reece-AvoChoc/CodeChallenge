@@ -1,11 +1,18 @@
+using Backend.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Npgsql;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("http://localhost:4200") // Adjust for your Angular frontend URL
+        builder.WithOrigins("http://localhost:4200")
                .AllowAnyHeader()
                .AllowAnyMethod();
 
@@ -15,9 +22,58 @@ builder.Services.AddCors(options =>
     });
 });
 
+var key = Convert.FromBase64String("n45lgAcaDCrS8imzyeK95lulYepYrpAySyoR++kBj0M=");
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Dynamically create the "StrumFusion" database if it does not exist
+var connectionStringWithoutDatabase = builder.Configuration.GetConnectionString("DefaultConnection").Replace("Database=StrumFusion;", "Database=;");
+var databaseName = "StrumFusion";
+
+try
+{
+    using (var conn = new NpgsqlConnection(connectionStringWithoutDatabase))
+    {
+        conn.Open();
+        using (var cmd = new NpgsqlCommand($"SELECT 1 FROM pg_database WHERE datname = '{databaseName}'", conn))
+        {
+            var exists = cmd.ExecuteScalar() != null;
+            if (!exists)
+            {
+                using (var createCmd = new NpgsqlCommand($"CREATE DATABASE \"{databaseName}\"", conn))
+                {
+                    createCmd.ExecuteNonQuery();
+                }
+            }
+        }
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"An error occurred while creating the database: {ex.Message}");
+}
 
 var app = builder.Build();
 
@@ -26,53 +82,26 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    // Code to open the Swagger UI page automatically
     var url = app.Urls.FirstOrDefault() ?? "http://localhost:5198";
     try
     {
         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
         {
             FileName = url + "/swagger",
-            UseShellExecute = true // For .NET Core 3.1 or .NET 5+
+            UseShellExecute = true
         });
     }
     catch (Exception ex)
     {
-        // Log or handle exception as needed
         Console.WriteLine($"Could not open the browser: {ex.Message}");
     }
 }
 
-// app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 
-app.UseCors(); // Enable CORS
-
-// var summaries = new[]
-// {
-//     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-// };
-
-// app.MapGet("/weatherforecast", () =>
-// {
-//     var forecast = Enumerable.Range(1, 5).Select(index =>
-//         new WeatherForecast
-//         (
-//             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-//             Random.Shared.Next(-20, 55),
-//             summaries[Random.Shared.Next(summaries.Length)]
-//         ))
-//         .ToArray();
-//     return forecast;
-// })
-// .WithName("GetWeatherForecast")
-// .WithOpenApi();
+app.UseCors();
 
 app.MapControllers();
 
 app.Run();
-
-// record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-// {
-//     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-// }

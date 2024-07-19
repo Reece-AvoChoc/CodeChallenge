@@ -2,13 +2,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Models.Domain;
 using Backend.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
-    [Route("api/home")]
+    
     [ApiController]
+    [Route("api/home")]
     public class HomeController : ControllerBase
     {
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetHome()
         {
@@ -26,7 +29,7 @@ namespace Backend.Controllers
 
             var usr = new User
             {
-                Id = id,
+                // Id = id,
                 FirstName = "John",
                 LastName = "Doe",
                 Email = "johndoe@gmail.com",
