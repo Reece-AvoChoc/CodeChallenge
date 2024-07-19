@@ -11,11 +11,13 @@ import { GetInTouchPopupComponent } from "./components/get-in-touch-popup/get-in
 import { ErrorPageComponent } from "./pages/error-page/error-page.component";
 import { LoginPage } from "./pages/login/login.page";
 import { RegisterPage } from "./pages/register/register.page";
+import { ProfileComponent } from "./pages/profile/profile.component";
 
 const routes: Routes = [
   { path: "login", component: LoginPage },
   { path: "register", component: RegisterPage },
   { path: "home", component: HomePage },
+  { path: "profile", component: ProfileComponent },
   { path: "about", component: AboutPage },
   { path: "", redirectTo: "/home", pathMatch: "full" }, // Default route
   { path: "**", component: ErrorPageComponent },
