@@ -21,6 +21,12 @@ public class AuthController : ControllerBase
         dbContext = context;
     }
 
+    [HttpGet("all")]
+    public IActionResult getAllUsers()
+    {
+        return Ok(dbContext.Users);
+    }
+
     [HttpPut("sign-up")]
     public IActionResult signUp([FromBody] User user)
     {
