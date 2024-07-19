@@ -32,6 +32,13 @@ public class AuthController : ControllerBase
         Console.WriteLine(user.Password);
         Console.WriteLine();
 
+
+        var existingUser = dbContext.Users.FirstOrDefault(u => u.Email == user.Email);
+        if (existingUser != null)
+        {
+            return Conflict();
+        }
+
         //if any attribute is null, return bad request
         if (user.FirstName == null || user.LastName == null || user.Email == null || user.Password == null)
         {
@@ -72,7 +79,7 @@ public class AuthController : ControllerBase
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var key = Convert.FromBase64String("n45lgAcaDCrS8imzyeK95lulYepYrpAySyoR++kBj0M=");
-        
+
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new Claim[] 
