@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { BackendService } from "../../../services/backend.service";
 import {
   FormBuilder,
@@ -17,10 +17,15 @@ import { CommonModule } from "@angular/common";
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   styleUrls: [],
 })
-export class RegisterPage {
+export class RegisterPage implements OnInit {
   imageData: any;
   homeMessage: string | undefined;
   joinForm: FormGroup;
+
+  name: string = "";
+  surname: string = "";
+  email: string = "";
+  issue: string = "";
 
   constructor(
     private backendService: BackendService,
@@ -34,6 +39,7 @@ export class RegisterPage {
       password: ["", [Validators.required, Validators.minLength(6)]],
     });
   }
+
   markAllAsTouched() {
     Object.keys(this.joinForm.controls).forEach((field) => {
       const control = this.joinForm.get(field);
@@ -47,25 +53,23 @@ export class RegisterPage {
       console.log("Form invalid");
       return;
     }
-    this.joinForm.reset();
-    this.router.navigate(["/login"]);
+
+    const formData = this.joinForm.value;
+
+    this.backendService.register(formData).subscribe(
+      (response) => {
+        console.log("Registration successful", response);
+        this.joinForm.reset();
+        this.router.navigate(["/login"]);
+      },
+      (error) => {
+        console.error("Registration failed", error);
+      }
+    );
   }
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    this.backendService.getImage("guitar").subscribe({
-      next: (res) => {
-        this.imageData = res;
-        console.log(res.url);
-      },
-    });
-
-    this.backendService.getHomePageMessage().subscribe({
-      next: (res) => {
-        this.homeMessage = res;
-        console.log(this.homeMessage);
-      },
-    });
+    // Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    // Add 'implements OnInit' to the class.
   }
 }
