@@ -332,12 +332,11 @@
 .register-link a:hover {
     text-decoration: underline;
 }
-
 .avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-    background: linear-gradient(to right, #4B0A07, #78150F);
+  background: linear-gradient(to right, #4B0A07, #78150F);
   color: white;
   display: flex;
   align-items: center;
@@ -358,7 +357,7 @@
 .dropdown-content {
   display: none;
   position: absolute;
-  background: linear-gradient(to right, #4B0A07, #78150F);
+  background: black;
   min-width: 100%; 
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
   padding: 20px;
@@ -370,17 +369,19 @@
 }
 
 .show-dropdown {
-  display: block;
+  display: flex;
+    flex-direction: column; 
 }
 
 .logout-link {
   margin-left: 10px; 
   color: white; 
-  text-decoration: none; 
+  text-decoration: none;
+  display: block;
+  padding: 10px;
 }
 
 .logout-link:hover {
-  margin-left: 10px; 
   color: white; 
   text-decoration: none; 
 }

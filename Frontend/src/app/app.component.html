@@ -26,6 +26,8 @@
         <div class="avatar" (click)="toggleDropdown()">{{ getUserInitials() }}</div>
         <div class="user-name" (click)="toggleDropdown()">{{ userName }}</div>
         <div class="dropdown-content" [ngClass]="{'show-dropdown': isDropdownOpen}">
+          <a routerLink="/login" class="logout-link" (click)="closeDropdown()">Profile</a>
+          <br>
           <a routerLink="/login" class="logout-link" (click)="closeDropdown()">Logout</a>
         </div>
       </div>

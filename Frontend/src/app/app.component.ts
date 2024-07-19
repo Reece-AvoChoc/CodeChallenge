@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, HostListener } from "@angular/core";
 import { Router, NavigationEnd } from "@angular/router";
 
 @Component({
@@ -30,6 +30,14 @@ export class AppComponent {
   closeDropdown() {
     this.isDropdownOpen = false;
   }
+
+  // @HostListener("document:click", ["$event"])
+  // handleClickOutside(event: Event) {
+  //   const target = event.target as HTMLElement;
+  //   if (!target.closest(".topbar")) {
+  //     this.isDropdownOpen = false;
+  //   }
+  // }
 
   toggleNavbar() {
     this.isNavbarOpen = !this.isNavbarOpen;
