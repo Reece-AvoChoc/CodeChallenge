@@ -1,24 +1,33 @@
-import { Component, HostListener } from "@angular/core";
-import { Router, NavigationEnd } from "@angular/router";
+import { Component, HostListener } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { BackendService } from '../services/backend.service';
+import { CookieService } from 'ngx-cookie-service';
+import { UserModel } from './models/user.model';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = "Frontend";
+  title = 'Frontend';
   isDropdownOpen: boolean = false;
   isNavbarOpen = false;
   isModalOpen = false;
   showNavBar = true;
   showLogin = false;
-  userName = "John Doe";
+  userName = '';
 
-  constructor(private router: Router) {
+  user?: UserModel
+
+  constructor(
+    private router: Router,
+    private backendService: BackendService,
+    private cookieService: CookieService
+  ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.showNavBar = event.url !== "/login" && event.url !== "/register";
+        this.showNavBar = event.url !== '/login' && event.url !== '/register';
       }
     });
   }
@@ -27,17 +36,15 @@ export class AppComponent {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
+  onLogout(): void {
+    this.closeDropdown()
+    this.backendService.logout();
+    this.router.navigateByUrl('/login');
+  }
+
   closeDropdown() {
     this.isDropdownOpen = false;
   }
-
-  // @HostListener("document:click", ["$event"])
-  // handleClickOutside(event: Event) {
-  //   const target = event.target as HTMLElement;
-  //   if (!target.closest(".topbar")) {
-  //     this.isDropdownOpen = false;
-  //   }
-  // }
 
   toggleNavbar() {
     this.isNavbarOpen = !this.isNavbarOpen;
@@ -51,11 +58,22 @@ export class AppComponent {
     this.isModalOpen = false;
   }
 
-  getUserInitials(): string {
-    const initials = this.userName
-      .split(" ")
+  getUserInitials(): string | undefined {
+    const initials = this.user?.email
+      .split(' ')
       .map((name) => name[0])
-      .join("");
-    return initials.toUpperCase();
+      .join('');
+    return initials?.toUpperCase();
+  }
+
+  ngOnInit(): void {
+    this.backendService.user().subscribe({
+      next: (response) => {
+        console.log(response);
+        this.user = response;
+      },
+    });
+
+    this.user = this.backendService.getUser();
   }
 }

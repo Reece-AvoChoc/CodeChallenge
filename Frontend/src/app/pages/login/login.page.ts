@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoginRequest } from '../../models/login-request.model';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,8 @@ export class LoginPage {
   constructor(
     private backendService: BackendService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ) {
     this.joinForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -56,6 +58,24 @@ export class LoginPage {
     this.backendService.login(model).subscribe({
       next: (response) => {
         console.log(response);
+        // Set Auth Cookie
+        this.cookieService.set(
+          'Authorization',
+          `Bearer ${response.token}`,
+          undefined,
+          '/',
+          undefined,
+          true,
+          'Strict'
+        );
+
+        // set user
+        this.backendService.setUser({
+          email: this.joinForm.value.email,
+        });
+
+        // Redirect to home
+        this.router.navigateByUrl('/');
       },
     });
     // this.joinForm.reset();
