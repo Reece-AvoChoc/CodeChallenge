@@ -34,7 +34,10 @@ export class BackendService {
   }
 
   getHomePageMessage(): Observable<string> {
-    return this.http.get(`${this.baseUrl}/home`, { responseType: 'text' });
+    return this.http.get(`${this.baseUrl}/home`, {
+      headers: { Authorization: this.cookieService.get('Authorization') },
+      responseType: 'text',
+    });
   }
 
   createRequest(data: RequestModel): Observable<any> {
@@ -67,7 +70,7 @@ export class BackendService {
 
   logout(): void {
     localStorage.clear();
-    this.cookieService.deleteAll('Authorization', '/login');
+    this.cookieService.deleteAll('Authorization', '/login', true, 'Strict');
     this.$user.next(undefined);
   }
 
