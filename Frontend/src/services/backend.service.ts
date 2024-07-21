@@ -7,6 +7,7 @@ import { LoginRequest } from '../app/models/login-request.model';
 import { LoginResponse } from '../app/models/login-response.model';
 import { UserModel } from '../app/models/user.model';
 import { CookieService } from 'ngx-cookie-service';
+import { RegisterRequestModel } from '../app/models/register-request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -53,10 +54,8 @@ export class BackendService {
     });
   }
 
-  register(data: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/sign-up`, data, {
-      responseType: 'json',
-    });
+  register(data: RegisterRequestModel): Observable<any> {
+    return this.http.put(`${this.baseUrl}/user/sign-up`, data);
   }
 
   setUser(user: UserModel): void {
