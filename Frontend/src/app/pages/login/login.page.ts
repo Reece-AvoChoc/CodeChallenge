@@ -1,20 +1,20 @@
-import { Component } from "@angular/core";
-import { BackendService } from "../../../services/backend.service";
+import { Component } from '@angular/core';
+import { BackendService } from '../../../services/backend.service';
 import {
   FormBuilder,
   FormGroup,
   FormsModule,
   Validators,
-} from "@angular/forms";
-import { Router } from "@angular/router";
-import { ReactiveFormsModule } from "@angular/forms";
-import { CommonModule } from "@angular/common";
-import { LoginRequest } from "../../models/login-request.model";
-import { CookieService } from "ngx-cookie-service";
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { LoginRequest } from '../../models/login-request.model';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "login.page.html",
+  selector: 'app-login',
+  templateUrl: 'login.page.html',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   styleUrls: [],
@@ -23,6 +23,8 @@ export class LoginPage {
   imageData: any;
   homeMessage: string | undefined;
   joinForm: FormGroup;
+  firstname: string | undefined;
+  lastname: string | undefined;
 
   constructor(
     private backendService: BackendService,
@@ -31,8 +33,8 @@ export class LoginPage {
     private cookieService: CookieService
   ) {
     this.joinForm = this.formBuilder.group({
-      email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required, Validators.minLength(6)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -46,7 +48,7 @@ export class LoginPage {
   submitForm() {
     if (this.joinForm.invalid) {
       this.markAllAsTouched();
-      console.log("Form invalid");
+      console.log('Form invalid');
       return;
     }
     console.log(this.joinForm.value);
@@ -59,29 +61,33 @@ export class LoginPage {
       next: (response) => {
         console.log(response);
         // Set Auth Cookie
+        this.firstname = response.firstName;
+        this.lastname = response.lastName;
         this.cookieService.set(
-          "Authorization",
+          'Authorization',
           `Bearer ${response.token}`,
           undefined,
-          "/",
+          '/',
           undefined,
           true,
-          "Strict"
+          'Strict'
         );
 
         // set user
         this.backendService.setUser({
           email: this.joinForm.value.email,
+          firstName: this.firstname,
+          lastName: this.lastname,
         });
 
         // Redirect to home
-        this.router.navigateByUrl("/");
+        this.router.navigateByUrl('/');
       },
     });
   }
 
   onRegister() {
-    this.router.navigate(["/register"]);
+    this.router.navigate(['/register']);
   }
 
   ngOnInit(): void {}

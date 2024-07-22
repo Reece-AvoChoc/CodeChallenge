@@ -21,7 +21,7 @@
       <button class="nav-button ms-auto mr-3 d-none d-lg-block" (click)="openModal()">Get in Touch</button>
       <div class="topbar">
         <div class="avatar" (click)="toggleDropdown()">{{ getUserInitials() }}</div>
-        <div class="user-name" (click)="toggleDropdown()">{{ user?.email }}</div>
+        <div class="user-name" (click)="toggleDropdown()">{{ userName }}</div>
         <div class="dropdown-content" [ngClass]="{'show-dropdown': isDropdownOpen}">
           <a routerLink="/profile" class="logout-link" (click)="closeDropdown()">Profile</a>
           <br>

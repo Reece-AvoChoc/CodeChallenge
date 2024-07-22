@@ -1,4 +1,4 @@
-import { Component, HostListener } from "@angular/core";
+import { Component, HostListener, OnInit } from "@angular/core";
 import { Router, NavigationEnd } from "@angular/router";
 import { BackendService } from "../services/backend.service";
 import { CookieService } from "ngx-cookie-service";
@@ -9,7 +9,7 @@ import { UserModel } from "./models/user.model";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = "Frontend";
   isDropdownOpen: boolean = false;
   isNavbarOpen = false;
@@ -59,7 +59,7 @@ export class AppComponent {
   }
 
   getUserInitials(): string | undefined {
-    const initials = this.user?.email
+    const initials = this.user?.firstName
       .split(" ")
       .map((name) => name[0])
       .join("");
@@ -69,11 +69,21 @@ export class AppComponent {
   ngOnInit(): void {
     this.backendService.user().subscribe({
       next: (response) => {
-        console.log(response);
-        this.user = response;
+        if (response) {
+          this.user = response;
+          console.log(this.user)
+          this.userName = `${this.user.firstName} ${this.user.lastName}`;
+        } else {
+          this.user = this.backendService.getUser();
+          if (this.user) {
+            console.log(this.user)
+            this.userName = `${this.user.firstName} ${this.user.lastName}`;
+          }
+        }
       },
+      error: (err) => {
+        console.error("Error fetching user:", err);
+      }
     });
-
-    this.user = this.backendService.getUser();
   }
 }
