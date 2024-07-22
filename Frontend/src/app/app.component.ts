@@ -1,24 +1,24 @@
-import { Component, HostListener } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { BackendService } from '../services/backend.service';
-import { CookieService } from 'ngx-cookie-service';
-import { UserModel } from './models/user.model';
+import { Component, HostListener } from "@angular/core";
+import { Router, NavigationEnd } from "@angular/router";
+import { BackendService } from "../services/backend.service";
+import { CookieService } from "ngx-cookie-service";
+import { UserModel } from "./models/user.model";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-  title = 'Frontend';
+  title = "Frontend";
   isDropdownOpen: boolean = false;
   isNavbarOpen = false;
   isModalOpen = false;
   showNavBar = true;
   showLogin = false;
-  userName = '';
+  userName = "";
 
-  user?: UserModel
+  user?: UserModel;
 
   constructor(
     private router: Router,
@@ -27,7 +27,7 @@ export class AppComponent {
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.showNavBar = event.url !== '/login' && event.url !== '/register';
+        this.showNavBar = event.url !== "/login" && event.url !== "/register";
       }
     });
   }
@@ -37,9 +37,9 @@ export class AppComponent {
   }
 
   onLogout(): void {
-    this.closeDropdown()
+    this.closeDropdown();
     this.backendService.logout();
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl("/login");
   }
 
   closeDropdown() {
@@ -60,9 +60,9 @@ export class AppComponent {
 
   getUserInitials(): string | undefined {
     const initials = this.user?.email
-      .split(' ')
+      .split(" ")
       .map((name) => name[0])
-      .join('');
+      .join("");
     return initials?.toUpperCase();
   }
 

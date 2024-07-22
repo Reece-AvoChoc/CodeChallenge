@@ -10,10 +10,6 @@ import { Router } from "@angular/router";
 })
 export class AboutPage {
   isModalOpen: boolean = false;
-  name: string = "";
-  surname: string = "";
-  email: string = "";
-  password: string = "";
   showError: boolean = false;
   showWelcomePopup: boolean = false;
   welcomeMessage: string = "";
@@ -58,6 +54,7 @@ export class AboutPage {
     this.showError = false;
     console.log("Modal closed");
   }
+
   markAllAsTouched() {
     Object.keys(this.joinForm.controls).forEach((field) => {
       const control = this.joinForm.get(field);
@@ -72,7 +69,13 @@ export class AboutPage {
       return;
     }
 
-    this.welcomeMessage = "Welcome to StrumFusion, John Doe!";
+    // Retrieve the user's name from the form
+    const userName = this.joinForm.get("name")?.value;
+    const userSurname = this.joinForm.get("surname")?.value;
+
+    // Update the welcomeMessage with the user's name
+    this.welcomeMessage = `Welcome to StrumFusion, ${userName} ${userSurname}!`;
+
     this.joinMessage =
       "We're thrilled to have you on board. You're now part of a global community of guitar enthusiasts who share your passion for music. Get ready to learn, connect, and grow with us. The journey starts now!";
 
