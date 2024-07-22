@@ -8,6 +8,8 @@ import { LoginResponse } from '../app/models/login-response.model';
 import { UserModel } from '../app/models/user.model';
 import { CookieService } from 'ngx-cookie-service';
 import { RegisterRequestModel } from '../app/models/register-request.model';
+import { UpdateUserModel } from '../app/models/updateUser.model';
+import { UpdateUserResponseModel } from '../app/models/updateUser-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -56,6 +58,17 @@ export class BackendService {
 
   register(data: RegisterRequestModel): Observable<any> {
     return this.http.put(`${this.baseUrl}/user/sign-up`, data);
+  }
+
+  delete(email: string): Observable<any> {
+    localStorage.clear();
+    return this.http.delete(`${this.baseUrl}/user/delete`, {
+      params: { email },
+    });
+  }
+
+  update(updateUserModel: UpdateUserModel): Observable<UpdateUserResponseModel> {
+    return this.http.put<UpdateUserResponseModel>(`${this.baseUrl}/user/update`, updateUserModel)
   }
 
   setUser(user: UserModel): void {

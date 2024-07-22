@@ -1,17 +1,21 @@
-import { Component } from "@angular/core";
-import { UserModel } from "../../models/user.model";
+import { Component } from '@angular/core';
+import { UserModel } from '../../models/user.model';
+import { Router } from '@angular/router';
+import { BackendService } from '../../../services/backend.service';
 
 @Component({
-  selector: "app-profile",
+  selector: 'app-profile',
   standalone: true,
   imports: [],
-  templateUrl: "./profile.component.html",
-  styleUrl: "./profile.component.css",
+  templateUrl: './profile.component.html',
+  styleUrl: './profile.component.css',
 })
 export class ProfileComponent {
   user?: UserModel;
-  backendService: any;
-  router: any;
+
+  constructor(private router: Router, private backendService: BackendService) {
+    this.user = this.backendService.getUser();
+  }
 
   getUserInitials(): string | undefined {
     if (this.user?.email) {
@@ -22,10 +26,16 @@ export class ProfileComponent {
   }
 
   deleteUser() {
-    this.backendService.deleteUser(this.user?.email).subscribe({
-      next: () => {
-        this.router.navigateByUrl("/login");
-      },
-    });
+    if (this.user?.email) {
+      this.backendService.delete(this.user.email).subscribe({
+        next: () => {
+          this.backendService.logout();
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          console.error('Error deleting user:', err);
+        }
+      });
+    }
   }
 }
