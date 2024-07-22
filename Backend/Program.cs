@@ -57,7 +57,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Dynamically create the "StrumFusion" database if it does not exist
-var connectionStringWithoutDatabase = builder.Configuration.GetConnectionString("DefaultConnection").Replace("Database=StrumFusion;", "Database=;");
+var connectionStringWithoutDatabase = builder.Configuration.GetConnectionString("DefaultConnection")!.Replace("Database=StrumFusion;", "Database=;");
 var databaseName = "StrumFusion";
 
 try
