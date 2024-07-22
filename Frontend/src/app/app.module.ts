@@ -9,6 +9,7 @@ import { AboutPage } from './pages/about/about.page';
 import { ErrorPage } from './errorpage/errorpage.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   { path: 'home', component: HomePage },
@@ -20,7 +21,12 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [AppComponent, HomePage, AboutPage, NavbarComponent],
-  imports: [BrowserModule, RouterModule.forRoot(routes), HttpClientModule],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes),
+    HttpClientModule,
+    BrowserAnimationsModule,
+  ],
 
   providers: [],
   bootstrap: [AppComponent],

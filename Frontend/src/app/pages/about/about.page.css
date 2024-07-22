@@ -3,6 +3,7 @@
   justify-content: space-between;
   height: 82vh;
   margin-top: 20px;
+  overflow: hidden;
 }
 
 .column {
@@ -11,6 +12,11 @@
   padding: 20px;
   background-color: #fff;
   text-align: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.column:hover {
+  transform: translateY(-20px);
 }
 
 .column h2 {

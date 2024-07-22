@@ -2,6 +2,7 @@
   class="container"
   [style.background-image]="'url(' + backgroundImageUrl + ')'"
   *ngIf="backgroundImageUrl"
+  @fadeInOut
 >
   <div class="column transparent">
     <h2>{{ missionHeading }}</h2>

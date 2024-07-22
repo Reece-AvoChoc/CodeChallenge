@@ -1,11 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { BackendService } from '../../../services/backend.service';
 import { Router } from '@angular/router';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-about',
   templateUrl: 'about.page.html',
   styleUrls: ['about.page.css'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('0.5s ease-out', style({ opacity: 0.8 })),
+      ]),
+    ]),
+  ],
 })
 export class AboutPage implements OnInit {
   backgroundImageUrl: string | ArrayBuffer | null = null;
