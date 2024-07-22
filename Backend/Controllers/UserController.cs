@@ -121,4 +121,46 @@ public class AuthController : ControllerBase
 
         return Ok();
     }
+
+    [HttpPut("update")]
+    public IActionResult updateUser([FromBody] User user)
+    {
+        Console.WriteLine();
+        Console.WriteLine("Updating user...");
+        Console.WriteLine(user.Email);
+        Console.WriteLine();
+
+        var existingUser = dbContext.Users.FirstOrDefault(u => u.Email == user.Email);
+
+        if (existingUser == null)
+        {
+            return NotFound();
+        }
+
+        existingUser.FirstName = user.FirstName;
+        existingUser.LastName = user.LastName;
+        existingUser.Password = user.Password;
+
+        dbContext.SaveChanges();
+
+        return Ok(existingUser);
+    }
+
+    [HttpPost("logout")]
+    public IActionResult logout([FromQuery] string email)
+    {
+
+        var usr = dbContext.Users.FirstOrDefault(u => u.Email == email);
+
+        if (usr == null)
+        {
+            return NotFound();
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("Logging out...");
+        Console.WriteLine($"{usr.Email}: {usr.FirstName} {usr.LastName}");
+        
+        return Ok($"{usr.FirstName} {usr.LastName} has been logged out.");
+    }
 }
