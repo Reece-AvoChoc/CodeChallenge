@@ -139,7 +139,14 @@ public class AuthController : ControllerBase
 
         existingUser.FirstName = user.FirstName;
         existingUser.LastName = user.LastName;
-        existingUser.Password = user.Password;
+
+        if (!string.IsNullOrEmpty(user.Password))
+        {
+            if (!BCrypt.Net.BCrypt.Verify(user.Password, existingUser.Password))
+            {
+                existingUser.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            }
+        }
 
         dbContext.SaveChanges();
 
