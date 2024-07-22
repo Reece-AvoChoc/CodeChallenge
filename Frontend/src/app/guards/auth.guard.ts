@@ -20,11 +20,9 @@ export const authGuard: CanActivateFn = (route, state) => {
     const expirationDate = decodedToken.exp * 1000;
     const currentTime = new Date().getTime();
 
-    if (expirationDate < currentTime) {
+    if (expirationDate < currentTime || localStorage.getItem('user-email') == null) {
       backendService.logout();
-      return router.createUrlTree(['/login'], {
-        queryParams: { returnUrl: state.url },
-      });
+      return router.createUrlTree(['/login']);
     } else {
       return true;
     }
