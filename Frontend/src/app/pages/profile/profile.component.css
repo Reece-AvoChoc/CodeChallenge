@@ -1,4 +1,12 @@
 img.rounded-circle {
-    border: 2px solid #ddd;
-    padding: 5px;
-  }
+  border: 2px solid #ddd;
+  padding: 5px;
+}
+
+.input-container input.ng-invalid.ng-touched {
+  border: 2px solid red !important;
+}
+
+.input-container input.ng-valid.ng-touched {
+  border: 2px solid green !important;
+}

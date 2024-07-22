@@ -1,46 +1,70 @@
 <div class="profile">
-    <div class="profile-container">
-        <div class="profile-details">
-            <h1 class="modal-heading">Profile Information</h1>
-            <div class="profile-avatar" >{{ getUserInitials() }}</div>
-            <form>
-                <div class="input-container">
-                    <label for="name" class="visually-hidden">Name:</label>
-                    <div class="icon-container">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="name" formControlName="name" placeholder="Name" />
-                    </div>
-                </div>
-     
-                <div class="input-container">
-                    <label for="surname" class="visually-hidden">Surname:</label>
-                    <div class="icon-container">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="surname" formControlName="surname" placeholder="Surname" />
-                    </div>
-                </div>
-
-                <div class="input-container">
-                    <label for="email" class="visually-hidden">Email:</label>
-                    <div class="icon-container">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" formControlName="email" placeholder="Email" />
-                    </div>
-                </div>
-
-                <div class="input-container">
-                    <label for="password" class="visually-hidden">Password:</label>
-                    <div class="icon-container">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" formControlName="password" placeholder="Password" />
-                    </div>
-                </div>
-
-                <div class="button-container">
-                    <button class="profile-button" type="submit">Save Changes</button>
-                    <button type="button" (click)="deleteUser()">Delete</button>
-                </div>
-            </form>
+  <div class="profile-container">
+    <div class="profile-details">
+      <h1 class="modal-heading">Profile Information</h1>
+      <div class="profile-avatar">{{ getUserInitials() }}</div>
+      <form [formGroup]="profileForm" (ngSubmit)="updateUser()">
+        <div class="input-container">
+          <label for="firstName" class="visually-hidden">First Name:</label>
+          <div class="icon-container">
+            <i class="fas fa-user"></i>
+            <input
+              type="text"
+              id="firstName"
+              formControlName="firstName"
+              placeholder="First Name"
+              [ngClass]="{'ng-invalid': profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched}"
+            />
+          </div>
         </div>
+
+        <div class="input-container">
+          <label for="lastName" class="visually-hidden">Last Name:</label>
+          <div class="icon-container">
+            <i class="fas fa-user"></i>
+            <input
+              type="text"
+              id="lastName"
+              formControlName="lastName"
+              placeholder="Last Name"
+              [ngClass]="{'ng-invalid': profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched}"
+            />
+          </div>
+        </div>
+
+        <div class="input-container">
+          <label for="email" class="visually-hidden">Email:</label>
+          <div class="icon-container">
+            <i class="fas fa-envelope"></i>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="Email"
+              [ngClass]="{'ng-invalid': profileForm.get('email')?.invalid && profileForm.get('email')?.touched}"
+            />
+          </div>
+        </div>
+
+        <div class="input-container">
+          <label for="password" class="visually-hidden">Password:</label>
+          <div class="icon-container">
+            <i class="fas fa-lock"></i>
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              placeholder="Password"
+              [ngClass]="{'ng-invalid': profileForm.get('password')?.invalid && profileForm.get('password')?.touched}"
+            />
+          </div>
+        </div>
+
+        <div class="button-container">
+          <button class="profile-button" type="submit">Save Changes</button>
+          <button type="button" (click)="deleteUser()">Delete</button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
