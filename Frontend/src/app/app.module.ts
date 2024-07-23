@@ -8,6 +8,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms'; // Make sure FormsModule is imported for ngModel
 
+import { MaterialModule } from './material.module'; // Import the created Material module
+import { LoginComponent } from './pages/login/login.component';
+import { SignupComponent } from './pages/signup/signup.component';
+import { EditUserComponent } from './pages/edit-user/edit-user.component';
+import { DeleteUserComponent } from './pages/delete-user/delete-user.component';
+
 import { AppComponent } from './app.component';
 import { HomePage } from './pages/home/home.page';
 import { AboutPage } from './pages/about/about.page';
@@ -41,6 +47,10 @@ const routes: Routes = [
     ModeComponent,
     ContactDialogComponent,
     Error404Component,
+    LoginComponent,
+    SignupComponent,
+    EditUserComponent,
+    DeleteUserComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +61,7 @@ const routes: Routes = [
     MatInputModule,
     MatDialogModule,
     FormsModule,
+    MaterialModule,
     // Add other imported modules here
   ],
   exports: [RouterModule],

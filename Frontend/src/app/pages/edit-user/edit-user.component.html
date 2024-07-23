@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Edit User</h1>
+<div mat-dialog-content>
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>New Email</mat-label>
+      <input
+        matInput
+        placeholder="New Email"
+        [(ngModel)]="newEmail"
+        name="newEmail"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>New Password</mat-label>
+      <input
+        matInput
+        type="password"
+        placeholder="New Password"
+        [(ngModel)]="newPassword"
+        name="newPassword"
+      />
+    </mat-form-field>
+    <button mat-button type="submit" class="nav-button">Save Changes</button>
+    <button
+      mat-button
+      type="button"
+      (click)="openDeleteUser()"
+      class="nav-button"
+    >
+      Delete User
+    </button>
+  </form>
+</div>
