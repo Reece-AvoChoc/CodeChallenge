@@ -9,6 +9,7 @@ import { LoginService } from '../login.service';
 })
 export class LogInPromptComponent {
   loginForm: FormGroup;
+  isVisible: boolean = true;
 
   constructor(private fb: FormBuilder, private loginService: LoginService) {
     this.loginForm = this.fb.group({
@@ -23,9 +24,11 @@ export class LogInPromptComponent {
         (response) => {
           console.log('details: ', username, password);
           console.log('Login successful', response);
+          this.isVisible = false;
         },
         (error) => {
           console.error('Login failed', error);
+          this.isVisible = false;
         }
       );
     }
