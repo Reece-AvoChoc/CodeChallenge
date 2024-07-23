@@ -1,3 +1,6 @@
+using Backend.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,10 +14,28 @@ builder.Services.AddCors(options =>
     });
 });
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Connection string is missing or empty.");
+}
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(connectionString));
+builder.Services.AddScoped<UserRepository>();  // Change to scoped
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Apply pending migrations at application startup
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -29,19 +50,16 @@ app.UseCors(); // Enable CORS
 
 app.UseStaticFiles(); // Enable serving static files
 
-
-// List of user information
-var users = new List<UserInfo>
+using (var scope = app.Services.CreateScope())
 {
-    new UserInfo("John", "Doe", "john.doe@example.com"),
-    new UserInfo("Jane", "Smith", "jane.smith@example.com"),
-    new UserInfo("Mike", "Johnson", "mike.johnson@example.com")
-};
+    var repository = scope.ServiceProvider.GetRequiredService<UserRepository>();
+    await SeedData.Initialize(repository);
+}
 
 // Endpoint for user information by email
-app.MapGet("/userinfo/{email}", (string email) =>
+app.MapGet("/userinfo/{email}", async (string email, UserRepository repository) =>
 {
-    var user = users.FirstOrDefault(u => u.Email == email);
+    var user = await repository.GetUserByEmailAsync(email);
     if (user == null)
     {
         return Results.NotFound(new { message = "User not found" });
@@ -51,37 +69,30 @@ app.MapGet("/userinfo/{email}", (string email) =>
 .WithName("GetUserInfo")
 .WithOpenApi();
 
-// Endpoint to create or update user information
-app.MapPost("/userinfo", (UserInfo newUserDTO) =>
+app.MapPost("/userinfo", async (User newUserDTO, UserRepository repository) =>
 {
     // Validate required fields
     if (string.IsNullOrWhiteSpace(newUserDTO.Email))
     {
         return Results.BadRequest(new { message = "Email is required." });
     }
-    if (string.IsNullOrWhiteSpace(newUserDTO.firstName) || string.IsNullOrWhiteSpace(newUserDTO.lastName))
+    if (string.IsNullOrWhiteSpace(newUserDTO.FirstName) || string.IsNullOrWhiteSpace(newUserDTO.LastName))
     {
         return Results.BadRequest(new { message = "First name and last name are required." });
     }
 
-    // Check if user with the same email already exists
-    var existingUser = users.FirstOrDefault(u => u.Email == newUserDTO.Email);
-    if (existingUser != null)
+    // Create a new user object
+    var user = new User
     {
-        // Update existing user's issue if provided
-        if (!string.IsNullOrWhiteSpace(newUserDTO.Issue))
-        {
-            existingUser.Issue = newUserDTO.Issue;
-        }
-        return Results.Ok(existingUser);
-    }
-    else
-    {
-        // Create a new user if email doesn't exist
-        var createdUser = new UserInfo(newUserDTO.firstName, newUserDTO.lastName, newUserDTO.Email, newUserDTO.Issue);
-        users.Add(createdUser);
-        return Results.Ok(createdUser);
-    }
+        FirstName = newUserDTO.FirstName,
+        LastName = newUserDTO.LastName,
+        Email = newUserDTO.Email,
+        PasswordHash = HashPassword(newUserDTO.PasswordHash), // Implement a method to hash the password
+        Issue = newUserDTO.Issue
+    };
+
+    await repository.AddOrUpdateUserAsync(user);
+    return Results.Ok(user);
 })
 .WithName("UpdateOrCreateUserInfo")
 .WithOpenApi();
@@ -120,25 +131,14 @@ app.MapGet("/aboutus", () =>
 
 app.Run();
 
-public class UserInfo
+string HashPassword(string password)
 {
-    public string firstName { get; set; }
-    public string lastName { get; set; }
-    public string Email { get; set; }
-    public string Issue { get; set; }
+    return BCrypt.Net.BCrypt.HashPassword(password);
+}
 
-    public UserInfo(string firstName, string lastName, string Email, string Issue = "")
-    {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.Email = Email;
-        this.Issue = Issue;
-    }
-
-    public override string ToString()
-    {
-        return $"UserInfo - Name: {firstName} {lastName}, Email: {Email}, Issue: {Issue}";
-    }
+bool VerifyPassword(string password, string hashedPassword)
+{
+    return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
 }
 
 public class AboutUs
