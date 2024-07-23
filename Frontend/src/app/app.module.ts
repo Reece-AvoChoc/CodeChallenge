@@ -13,7 +13,6 @@ import { LoginPage } from './pages/login/login.page';
 import { RegisterPage } from './pages/register/register.page';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { authGuard } from './guards/auth.guard';
-import { MessageService } from 'primeng/api';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 
@@ -35,7 +34,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     GetInTouchPopupComponent,
   ],
-  providers: [provideHttpClient(), RouterModule, MessageService, provideAnimations()],
+  providers: [provideHttpClient(), RouterModule, provideAnimations()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

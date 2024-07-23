@@ -1,22 +1,22 @@
-import { Component } from '@angular/core';
-import { UserModel } from '../../models/user.model';
-import { Router } from '@angular/router';
-import { BackendService } from '../../../services/backend.service';
+import { Component } from "@angular/core";
+import { UserModel } from "../../models/user.model";
+import { Router } from "@angular/router";
+import { BackendService } from "../../../services/backend.service";
 import {
   FormBuilder,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
   Validators,
-} from '@angular/forms';
-import { CommonModule } from '@angular/common';
+} from "@angular/forms";
+import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: 'app-profile',
+  selector: "app-profile",
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css',
+  templateUrl: "./profile.component.html",
+  styleUrl: "./profile.component.css",
 })
 export class ProfileComponent {
   user?: UserModel;
@@ -32,7 +32,7 @@ export class ProfileComponent {
       firstName: [this.user?.firstName, Validators.required],
       lastName: [this.user?.lastName, Validators.required],
       email: [this.user?.email, [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ["", Validators.required],
     });
   }
 
@@ -41,21 +41,21 @@ export class ProfileComponent {
       const updateUserModel = this.profileForm.value;
       this.backendService.update(updateUserModel).subscribe({
         next: (response) => {
-          console.log('User updated successfully:', response);
+          console.log("User updated successfully:", response);
           // Optionally update the local user data
           this.backendService.setUser(response);
-          this.router.navigate(['/']);
+          this.router.navigate(["/"]);
         },
         error: (err) => {
-          console.error('Error updating user:', err);
+          console.error("Error updating user:", err);
         },
       });
     }
   }
 
   getUserInitials(): string | undefined {
-    if (this.user?.email) {
-      const initials = this.user.email[0].toUpperCase();
+    if (this.user?.firstName && this.user?.lastName) {
+      const initials = `${this.user.firstName[0].toUpperCase()}${this.user.lastName[0].toUpperCase()}`;
       return initials;
     }
     return undefined;
@@ -66,10 +66,10 @@ export class ProfileComponent {
       this.backendService.delete(this.user.email).subscribe({
         next: () => {
           this.backendService.logout();
-          this.router.navigate(['/login']);
+          this.router.navigate(["/login"]);
         },
         error: (err) => {
-          console.error('Error deleting user:', err);
+          console.error("Error deleting user:", err);
         },
       });
     }
