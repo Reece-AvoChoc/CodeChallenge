@@ -10,17 +10,24 @@ import { ErrorPage } from './errorpage/errorpage.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LogInPromptComponent } from './log-in-prompt/log-in-prompt.component';
 
 const routes: Routes = [
   { path: 'home', component: HomePage },
   { path: 'about', component: AboutPage },
   { path: 'error', component: ErrorPage },
   { path: 'form', component: ContactFormComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 
 @NgModule({
-  declarations: [AppComponent, HomePage, AboutPage, NavbarComponent],
+  declarations: [
+    AppComponent,
+    HomePage,
+    AboutPage,
+    NavbarComponent,
+    LogInPromptComponent,
+  ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
