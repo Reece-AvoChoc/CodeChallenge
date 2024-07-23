@@ -1,5 +1,10 @@
 using Backend.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +18,35 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod();
     });
 });
+
+// JWT Configuration
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+builder.Services.Configure<JwtSettings>(jwtSettings);
+
+var key = Encoding.ASCII.GetBytes(jwtSettings["Secret"]);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
+
+builder.Services.AddAuthorization();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -50,6 +84,9 @@ app.UseCors(); // Enable CORS
 
 app.UseStaticFiles(); // Enable serving static files
 
+app.UseAuthentication(); // Add this
+app.UseAuthorization(); // Add this
+
 using (var scope = app.Services.CreateScope())
 {
     var repository = scope.ServiceProvider.GetRequiredService<UserRepository>();
@@ -57,7 +94,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Endpoint for user information by email
-app.MapGet("/userinfo/{email}", async (string email, UserRepository repository) =>
+app.MapGet("/userinfo/{email}", [Authorize] async (string email, UserRepository repository) =>
 {
     var user = await repository.GetUserByEmailAsync(email);
     if (user == null)
@@ -128,8 +165,112 @@ app.MapGet("/aboutus", () =>
 .WithName("GetAboutUs")
 .WithOpenApi();
 
+// User registration endpoint
+app.MapPost("/register", async (User newUserDTO, UserRepository repository) =>
+{
+    if (string.IsNullOrWhiteSpace(newUserDTO.Email) || string.IsNullOrWhiteSpace(newUserDTO.PasswordHash))
+    {
+        return Results.BadRequest(new { message = "Email and password are required." });
+    }
+
+    var existingUser = await repository.GetUserByEmailAsync(newUserDTO.Email);
+    if (existingUser != null)
+    {
+        return Results.BadRequest(new { message = "User already exists." });
+    }
+
+    var user = new User
+    {
+        FirstName = newUserDTO.FirstName,
+        LastName = newUserDTO.LastName,
+        Email = newUserDTO.Email,
+        PasswordHash = HashPassword(newUserDTO.PasswordHash),
+        Issue = newUserDTO.Issue
+    };
+
+    await repository.AddOrUpdateUserAsync(user);
+    return Results.Ok(new { message = "User registered successfully." });
+})
+.WithName("RegisterUser")
+.WithOpenApi();
+
+// User login endpoint
+app.MapPost("/login", async (LoginDTO loginDTO, UserRepository repository, IConfiguration config) =>
+{
+    var user = await repository.GetUserByEmailAsync(loginDTO.Email);
+    if (user == null || !VerifyPassword(loginDTO.Password, user.PasswordHash))
+    {
+        return Results.Unauthorized(new { message = "Invalid credentials." });
+    }
+
+    var token = GenerateJwtToken(user, config);
+    return Results.Ok(new { token });
+})
+.WithName("LoginUser")
+.WithOpenApi();
+
+// Modify user endpoint
+app.MapPut("/userinfo/{email}", [Authorize] async (string email, User updatedUserDTO, UserRepository repository) =>
+{
+    var user = await repository.GetUserByEmailAsync(email);
+    if (user == null)
+    {
+        return Results.NotFound(new { message = "User not found" });
+    }
+
+    user.FirstName = updatedUserDTO.FirstName;
+    user.LastName = updatedUserDTO.LastName;
+    user.Email = updatedUserDTO.Email;
+    if (!string.IsNullOrWhiteSpace(updatedUserDTO.PasswordHash))
+    {
+        user.PasswordHash = HashPassword(updatedUserDTO.PasswordHash);
+    }
+    user.Issue = updatedUserDTO.Issue;
+
+    await repository.AddOrUpdateUserAsync(user);
+    return Results.Ok(new { message = "User updated successfully." });
+})
+.WithName("ModifyUserInfo")
+.WithOpenApi();
+
+// Delete user endpoint
+app.MapDelete("/userinfo/{email}", [Authorize] async (string email, UserRepository repository) =>
+{
+    var user = await repository.GetUserByEmailAsync(email);
+    if (user == null)
+    {
+        return Results.NotFound(new { message = "User not found" });
+    }
+
+    await repository.DeleteUserAsync(email);
+    return Results.Ok(new { message = "User deleted successfully." });
+})
+.WithName("DeleteUserInfo")
+.WithOpenApi();
 
 app.Run();
+
+string GenerateJwtToken(User user, IConfiguration config)
+{
+    var jwtSettings = config.GetSection("JwtSettings");
+    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Secret"]));
+    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+    var claims = new[]
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+    };
+
+    var token = new JwtSecurityToken(
+        issuer: jwtSettings["Issuer"],
+        audience: jwtSettings["Audience"],
+        claims: claims,
+        expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings["ExpiryMinutes"])),
+        signingCredentials: creds);
+
+    return new JwtSecurityTokenHandler().WriteToken(token);
+}
 
 string HashPassword(string password)
 {
@@ -157,4 +298,10 @@ public class AboutUs
         Rejuvenate = rejuvenate;
         Refresh = refresh;
     }
+}
+
+public class LoginDTO
+{
+    public string Email { get; set; }
+    public string Password { get; set; }
 }
