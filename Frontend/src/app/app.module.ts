@@ -13,7 +13,8 @@ import { LoginPage } from './pages/login/login.page';
 import { RegisterPage } from './pages/register/register.page';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { authGuard } from './guards/auth.guard';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 const routes: Routes = [
@@ -33,6 +34,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
     GetInTouchPopupComponent,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [provideHttpClient(), RouterModule, provideAnimations()],
   bootstrap: [AppComponent],

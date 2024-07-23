@@ -1,38 +1,51 @@
 <div class="login-container">
-    <div class="image-side"></div>
-    <div class="login-side">
-        <div class="login-modal">
-            <h1 class="login-heading">StrumFusion</h1>
-            <p class="sub-heading">Welcome back! Log in to continue your journey</p>
-                <div *ngIf="loginError" class="error-message">
-                User details invalid.
-            </div>
-            <form [formGroup]="joinForm" (ngSubmit)="submitForm()">
-                <div class="input-container">
-                    <label for="email" class="visually-hidden">Email:</label>
-                    <div class="icon-container">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" formControlName="email" placeholder="Email" />
-                    </div>
-                    <div *ngIf="joinForm.get('email')?.invalid && joinForm.get('email')?.touched" class="error-message">
-                        Valid email is required.
-                    </div>
-                </div>
-                <div class="input-container">
-                    <label for="password" class="visually-hidden">Password:</label>
-                    <div class="icon-container">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" formControlName="password" placeholder="Password" />
-                    </div>
-                    <div *ngIf="joinForm.get('password')?.invalid && joinForm.get('password')?.touched" class="error-message">
-                        Password is required.
-                    </div>
-                </div>
-                <button class="nav-button">Login</button>
-            </form>
-            <div class="register-link">
-                <a (click)="onRegister()">Don't have an account? Register here</a>
-            </div>
+  <div class="image-side"></div>
+  <div class="login-side">
+    <div class="login-modal">
+      <h1 class="login-heading">StrumFusion</h1>
+      <p class="sub-heading">Welcome back! Log in to continue your journey</p>
+      <form [formGroup]="joinForm" (ngSubmit)="submitForm()">
+        <div class="input-container">
+          <label for="email" class="visually-hidden">Email:</label>
+          <div class="icon-container">
+            <i class="fas fa-envelope"></i>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="Email"
+            />
+          </div>
+          <div
+            *ngIf="joinForm.get('email')?.invalid && joinForm.get('email')?.touched"
+            class="error-message"
+          >
+            Valid email is required.
+          </div>
         </div>
+        <div class="input-container">
+          <label for="password" class="visually-hidden">Password:</label>
+          <div class="icon-container">
+            <i class="fas fa-lock"></i>
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              placeholder="Password"
+            />
+          </div>
+          <div
+            *ngIf="joinForm.get('password')?.invalid && joinForm.get('password')?.touched"
+            class="error-message"
+          >
+            Password is required.
+          </div>
+        </div>
+        <button class="nav-button">Login</button>
+      </form>
+      <div class="register-link">
+        <a (click)="onRegister()">Don't have an account? Register here</a>
+      </div>
     </div>
+  </div>
 </div>
