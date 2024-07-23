@@ -27,11 +27,14 @@ export class BackendService {
   }
 
   getAbout(): Observable<AboutModel> {
-    return this.http.get<AboutModel>(`${this.baseUrl}/about`);
+    return this.http.get<AboutModel>(`${this.baseUrl}/about`, {
+      headers: { Authorization: this.cookieService.get('Authorization') }
+    });
   }
 
   getImage(name: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/home/image`, {
+      headers: { Authorization: this.cookieService.get('Authorization') },
       params: { name },
     });
   }
@@ -45,6 +48,7 @@ export class BackendService {
 
   createRequest(data: RequestModel): Observable<any> {
     return this.http.post(`${this.baseUrl}/home/get-in-touch`, data, {
+      headers: { Authorization: this.cookieService.get('Authorization') },
       responseType: 'text',
     });
   }
@@ -63,12 +67,15 @@ export class BackendService {
   delete(email: string): Observable<any> {
     localStorage.clear();
     return this.http.delete(`${this.baseUrl}/user/delete`, {
+      headers: { Authorization: this.cookieService.get('Authorization') },
       params: { email },
     });
   }
 
   update(updateUserModel: UpdateUserModel): Observable<UpdateUserResponseModel> {
-    return this.http.put<UpdateUserResponseModel>(`${this.baseUrl}/user/update`, updateUserModel)
+    return this.http.put<UpdateUserResponseModel>(`${this.baseUrl}/user/update`, updateUserModel, {
+      headers: { Authorization: this.cookieService.get('Authorization') },
+    })
   }
 
   setUser(user: UserModel): void {
