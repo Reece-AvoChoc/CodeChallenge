@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 // using Backend.Models.DTO;
 using Backend.Models.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -10,6 +11,7 @@ namespace Backend.Controllers
     [ApiController]
     public class AboutController : ControllerBase
     {
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAbout()
         {
