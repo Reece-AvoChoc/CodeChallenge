@@ -42,11 +42,13 @@
 
 .overlay-content h2 {
   margin-bottom: 1.5rem;
+  font-family: "Arial", sans-serif;
 }
 
 .form-group {
   margin-bottom: 1rem;
   text-align: left;
+  font-family: "Arial", sans-serif;
 }
 
 .form-group label {
