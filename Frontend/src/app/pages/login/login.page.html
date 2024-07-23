@@ -4,6 +4,9 @@
         <div class="login-modal">
             <h1 class="login-heading">StrumFusion</h1>
             <p class="sub-heading">Welcome back! Log in to continue your journey</p>
+                <div *ngIf="loginError" class="error-message">
+                User details invalid.
+            </div>
             <form [formGroup]="joinForm" (ngSubmit)="submitForm()">
                 <div class="input-container">
                     <label for="email" class="visually-hidden">Email:</label>

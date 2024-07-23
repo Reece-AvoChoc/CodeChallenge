@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   showNavBar = true;
   showLogin = false;
   userName = "";
+  userEmail = "";
 
   user?: UserModel;
 
@@ -59,11 +60,12 @@ export class AppComponent implements OnInit {
   }
 
   getUserInitials(): string | undefined {
-    const initials = this.user?.firstName
-      .split(" ")
-      .map((name) => name[0])
-      .join("");
-    return initials?.toUpperCase();
+    if (this.user?.firstName && this.user?.lastName) {
+      const firstNameInitial = this.user.firstName[0];
+      const lastNameInitial = this.user.lastName[0];
+      return `${firstNameInitial}${lastNameInitial}`.toUpperCase();
+    }
+    return undefined;
   }
 
   ngOnInit(): void {
@@ -71,19 +73,21 @@ export class AppComponent implements OnInit {
       next: (response) => {
         if (response) {
           this.user = response;
-          console.log(this.user)
+          console.log(this.user);
           this.userName = `${this.user.firstName} ${this.user.lastName}`;
+          this.userEmail = this.user.email;
         } else {
           this.user = this.backendService.getUser();
           if (this.user) {
-            console.log(this.user)
+            console.log(this.user);
             this.userName = `${this.user.firstName} ${this.user.lastName}`;
+            this.userEmail = this.user.email;
           }
         }
       },
       error: (err) => {
         console.error("Error fetching user:", err);
-      }
+      },
     });
   }
 }
