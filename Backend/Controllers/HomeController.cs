@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Backend.Models.Domain;
 using Backend.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
+using Backend.Data;
 
 namespace Backend.Controllers
 {
@@ -11,6 +12,14 @@ namespace Backend.Controllers
     [Route("api/home")]
     public class HomeController : ControllerBase
     {
+
+        private readonly ApplicationDbContext dbContext;
+
+        public HomeController(ApplicationDbContext context)
+        {
+            dbContext = context;
+        }
+
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetHome()
@@ -19,27 +28,27 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("user-info")]
-        public async Task<IActionResult> GetUserInfo([FromQuery] int id)
+        public async Task<IActionResult> GetUserInfo([FromQuery] string email)
         {
             Console.WriteLine();
-            Console.WriteLine("Getting User Info based on id:");
-            Console.WriteLine(id);
+            Console.WriteLine("Getting User Info based on email:");
+            Console.WriteLine(email);
             Console.WriteLine();
 
-            var usr = new User
+            var usr = dbContext.Users.FirstOrDefault(u => u.Email == email);
+
+            if(usr == null)
             {
-                // Id = id,
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "johndoe@gmail.com",
-                Password = "password",
-            };
+                return NotFound($"User with email '{email}' not found.");
+            }
 
             return await Task.FromResult(Ok(usr));
         }
 
         [HttpPost]
+        [Authorize]
         [Route("get-in-touch")]
         public async Task<IActionResult> GetInTouch([FromBody] GetInTouch getInTouch)
         {
@@ -55,6 +64,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("image")]
         public IActionResult GetImage([FromQuery] string name)
         {

@@ -1,6 +1,7 @@
 using Backend.Data;
 using Backend.Models.Domain;
 using Backend.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,6 +23,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("all")]
+    [Authorize]
     public IActionResult getAllUsers()
     {
         return Ok(dbContext.Users);
@@ -102,6 +104,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpDelete("delete")]
+    [Authorize]
     public IActionResult deleteUser([FromQuery] string email)
     {
         Console.WriteLine();
@@ -123,6 +126,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPut("update")]
+    [Authorize]
     public IActionResult updateUser([FromBody] User user)
     {
         Console.WriteLine();
@@ -154,6 +158,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("logout")]
+    [Authorize]
     public IActionResult logout([FromQuery] string email)
     {
 
