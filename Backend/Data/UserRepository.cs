@@ -32,6 +32,7 @@ namespace Backend.Data
             await _dbConnection.ExecuteAsync(query, user);
         }
 
+
         public async Task<bool> DeleteUserAsync(string email)
         {
             var query = "DELETE FROM Users WHERE Email = @Email";

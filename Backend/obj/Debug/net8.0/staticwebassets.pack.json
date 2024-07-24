@@ -1,0 +1,57 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/wwwroot/images/background.jpeg",
+      "PackagePath": "staticwebassets/images/background.jpeg"
+    },
+    {
+      "Id": "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/wwwroot/images/gallery-image-1.jpeg",
+      "PackagePath": "staticwebassets/images/gallery-image-1.jpeg"
+    },
+    {
+      "Id": "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/wwwroot/images/gallery-image-2.jpeg",
+      "PackagePath": "staticwebassets/images/gallery-image-2.jpeg"
+    },
+    {
+      "Id": "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/wwwroot/images/gallery-image-3.jpeg",
+      "PackagePath": "staticwebassets/images/gallery-image-3.jpeg"
+    },
+    {
+      "Id": "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/wwwroot/images/gallery-image-4.jpeg",
+      "PackagePath": "staticwebassets/images/gallery-image-4.jpeg"
+    },
+    {
+      "Id": "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/wwwroot/images/gallery-image-5.jpeg",
+      "PackagePath": "staticwebassets/images/gallery-image-5.jpeg"
+    },
+    {
+      "Id": "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/wwwroot/images/gallery-image-6.jpeg",
+      "PackagePath": "staticwebassets/images/gallery-image-6.jpeg"
+    },
+    {
+      "Id": "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/wwwroot/images/logo.jpeg",
+      "PackagePath": "staticwebassets/images/logo.jpeg"
+    },
+    {
+      "Id": "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/wwwroot/images/lotus.jpeg",
+      "PackagePath": "staticwebassets/images/lotus.jpeg"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.Backend.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.Backend.props",
+      "PackagePath": "build\\Backend.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.Backend.props",
+      "PackagePath": "buildMultiTargeting\\Backend.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.Backend.props",
+      "PackagePath": "buildTransitive\\Backend.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

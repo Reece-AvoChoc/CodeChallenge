@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/kunoboettiger/Documents/dotNET Practice/CodeChallenge/Backend/Backend.csproj": {}
+    "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/Backend.csproj": {}
   },
   "projects": {
-    "/Users/kunoboettiger/Documents/dotNET Practice/CodeChallenge/Backend/Backend.csproj": {
+    "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/kunoboettiger/Documents/dotNET Practice/CodeChallenge/Backend/Backend.csproj",
+        "projectUniqueName": "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "/Users/kunoboettiger/Documents/dotNET Practice/CodeChallenge/Backend/Backend.csproj",
-        "packagesPath": "/Users/kunoboettiger/.nuget/packages/",
-        "outputPath": "/Users/kunoboettiger/Documents/dotNET Practice/CodeChallenge/Backend/obj/",
+        "projectPath": "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/Backend.csproj",
+        "packagesPath": "/Users/reece/.nuget/packages/",
+        "outputPath": "/Users/reece/Desktop/More_Code/Coding_Challenge/Backend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/kunoboettiger/.nuget/NuGet/NuGet.Config"
+          "/Users/reece/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -105,7 +105,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -6,281 +6,290 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using System.Data;
+using Npgsql; // Ensure you have this package
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddCors(options =>
+public partial class Program
 {
-    options.AddDefaultPolicy(builder =>
+    public static void Main(string[] args)
     {
-        builder.WithOrigins("http://localhost:4200") // Adjust for your Angular frontend URL
-               .AllowAnyHeader()
-               .AllowAnyMethod();
-    });
-});
+        var builder = WebApplication.CreateBuilder(args);
 
-// JWT Configuration
-var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-builder.Services.Configure<JwtSettings>(jwtSettings);
+        // Add services to the container.
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder.WithOrigins("http://localhost:4200") // Adjust for your Angular frontend URL
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+            });
+        });
 
-var key = Encoding.ASCII.GetBytes(jwtSettings["Secret"]);
+        // JWT Configuration
+        var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+        builder.Services.Configure<JwtSettings>(jwtSettings);
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(key)
-    };
-});
+        var key = Encoding.ASCII.GetBytes(jwtSettings["Secret"] ?? throw new InvalidOperationException("JWT Secret is not configured"));
 
-builder.Services.AddAuthorization();
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.RequireHttpsMetadata = false;
+            options.SaveToken = true;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettings["Issuer"],
+                ValidAudience = jwtSettings["Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(key)
+            };
+        });
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        builder.Services.AddAuthorization();
 
-if (string.IsNullOrEmpty(connectionString))
-{
-    throw new InvalidOperationException("Connection string is missing or empty.");
-}
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
-builder.Services.AddScoped<UserRepository>();  // Change to scoped
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new InvalidOperationException("Connection string is missing or empty.");
+        }
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+        // Register the IDbConnection with NpgsqlConnection
+        builder.Services.AddScoped<IDbConnection>(sp => new NpgsqlConnection(connectionString));
 
-var app = builder.Build();
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseNpgsql(connectionString));
 
-// Apply pending migrations at application startup
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.Migrate();
-}
+        builder.Services.AddScoped<UserRepository>();  // Ensure UserRepository is registered
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
-app.UseHttpsRedirection();
+        var app = builder.Build();
 
-app.UseCors(); // Enable CORS
+        // Apply pending migrations at application startup
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            dbContext.Database.Migrate();
+        }
 
-app.UseStaticFiles(); // Enable serving static files
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
 
-app.UseAuthentication(); // Add this
-app.UseAuthorization(); // Add this
+        app.UseHttpsRedirection();
+        app.UseCors(); // Enable CORS
+        app.UseStaticFiles(); // Enable serving static files
+        app.UseAuthentication(); // Add this
+        app.UseAuthorization(); // Add this
 
-using (var scope = app.Services.CreateScope())
-{
-    var repository = scope.ServiceProvider.GetRequiredService<UserRepository>();
-    await SeedData.Initialize(repository);
-}
+        using (var scope = app.Services.CreateScope())
+        {
+            var repository = scope.ServiceProvider.GetRequiredService<UserRepository>();
+            //SeedData.Initialize(repository).Wait();
+        }
 
-// Endpoint for user information by email
-app.MapGet("/userinfo/{email}", [Authorize] async (string email, UserRepository repository) =>
-{
-    var user = await repository.GetUserByEmailAsync(email);
-    if (user == null)
-    {
-        return Results.NotFound(new { message = "User not found" });
+        // Endpoint for user information by email
+        app.MapGet("/userinfo/{email}", [Authorize] async (string email, UserRepository repository) =>
+        {
+            var user = await repository.GetUserByEmailAsync(email);
+            if (user == null)
+            {
+                return Results.NotFound(new { message = "User not found" });
+            }
+            return Results.Ok(user);
+        })
+        .WithName("GetUserInfo")
+        .WithOpenApi();
+
+        app.MapPost("/userinfo", async (User newUserDTO, UserRepository repository) =>
+        {
+            // Validate required fields
+            if (string.IsNullOrWhiteSpace(newUserDTO.Email))
+            {
+                return Results.BadRequest(new { message = "Email is required." });
+            }
+            if (string.IsNullOrWhiteSpace(newUserDTO.FirstName) || string.IsNullOrWhiteSpace(newUserDTO.LastName))
+            {
+                return Results.BadRequest(new { message = "First name and last name are required." });
+            }
+
+            // Create a new user object
+            var user = new User
+            {
+                FirstName = newUserDTO.FirstName,
+                LastName = newUserDTO.LastName,
+                Email = newUserDTO.Email,
+                PasswordHash = HashPassword(newUserDTO.PasswordHash), // Implement a method to hash the password
+                Issue = newUserDTO.Issue
+            };
+
+            await repository.AddOrUpdateUserAsync(user);
+            return Results.Ok(user);
+        })
+        .WithName("UpdateOrCreateUserInfo")
+        .WithOpenApi();
+
+        // Endpoint for serving specific site images
+        app.MapGet("/siteimages/{img}", (string img) =>
+        {
+            var filePath = Path.Combine(app.Environment.WebRootPath, "images", $"{img}.jpeg");
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return Results.NotFound(new { message = "Image not found" });
+            }
+
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
+            return Results.File(fileBytes, "image/jpeg");
+        })
+        .WithName("GetSiteImages")
+        .WithOpenApi();
+
+        // Endpoint for About Us page text
+        app.MapGet("/aboutus", () =>
+        {
+            var aboutUsInfo = new AboutUs(
+                "Step into The Zen Den and embark on a journey of relaxation and self-discovery. Let us pamper you with our luxurious treatments and serene ambiance, leaving you feeling refreshed, revitalized, and ready to face the world anew.",
+                "Rediscover your energy and vitality with treatments designed to replenish your mind and body, leaving you feeling renewed and ready to take on the day.",
+                "Unwind in our tranquil oasis where soothing massages and calming aromatherapy create a peaceful atmosphere, helping you melt away tension and stress.",
+                "Experience the transformative power of our holistic treatments and wellness rituals, designed to restore balance and enhance your overall well-being, leaving you feeling youthful and revitalized.",
+                "Awaken your senses and revitalize your skin with refreshing facials and therapies that cleanse and invigorate, giving your complexion a radiant glow."
+            );
+            return Results.Ok(aboutUsInfo);
+        })
+        .WithName("GetAboutUs")
+        .WithOpenApi();
+
+        // User registration endpoint
+        app.MapPost("/register", async (User newUserDTO, UserRepository repository) =>
+        {
+            if (string.IsNullOrWhiteSpace(newUserDTO.Email) || string.IsNullOrWhiteSpace(newUserDTO.PasswordHash))
+            {
+                return Results.BadRequest(new { message = "Email and password are required." });
+            }
+
+            var existingUser = await repository.GetUserByEmailAsync(newUserDTO.Email);
+            if (existingUser != null)
+            {
+                return Results.BadRequest(new { message = "User already exists." });
+            }
+
+            var user = new User
+            {
+                FirstName = newUserDTO.FirstName,
+                LastName = newUserDTO.LastName,
+                Email = newUserDTO.Email,
+                PasswordHash = HashPassword(newUserDTO.PasswordHash),
+                Issue = newUserDTO.Issue
+            };
+
+            await repository.AddOrUpdateUserAsync(user);
+            return Results.Ok(new { message = "User registered successfully." });
+        })
+        .WithName("RegisterUser")
+        .WithOpenApi();
+
+        // User login endpoint
+        app.MapPost("/login", async (LoginDTO loginDTO, UserRepository repository, IConfiguration config) =>
+        {
+            var user = await repository.GetUserByEmailAsync(loginDTO.Email);
+            if (user == null || !VerifyPassword(loginDTO.Password, user.PasswordHash))
+            {
+                return Results.Unauthorized();
+            }
+
+            var token = GenerateJwtToken(user, config);
+            return Results.Ok(new { token });
+        })
+        .WithName("LoginUser")
+        .WithOpenApi();
+
+        // Modify user endpoint
+        app.MapPut("/userinfo/{email}", [Authorize] async (string email, User updatedUserDTO, UserRepository repository) =>
+        {
+            var user = await repository.GetUserByEmailAsync(email);
+            if (user == null)
+            {
+                return Results.NotFound(new { message = "User not found" });
+            }
+
+            user.FirstName = updatedUserDTO.FirstName;
+            user.LastName = updatedUserDTO.LastName;
+            user.Email = updatedUserDTO.Email;
+            if (!string.IsNullOrWhiteSpace(updatedUserDTO.PasswordHash))
+            {
+                user.PasswordHash = HashPassword(updatedUserDTO.PasswordHash);
+            }
+            user.Issue = updatedUserDTO.Issue;
+
+            await repository.AddOrUpdateUserAsync(user);
+            return Results.Ok(new { message = "User updated successfully." });
+        })
+        .WithName("ModifyUserInfo")
+        .WithOpenApi();
+
+        // Delete user endpoint
+        app.MapDelete("/userinfo/{email}", [Authorize] async (string email, UserRepository repository) =>
+        {
+            var user = await repository.GetUserByEmailAsync(email);
+            if (user == null)
+            {
+                return Results.NotFound(new { message = "User not found" });
+            }
+
+            await repository.DeleteUserAsync(email);
+            return Results.Ok(new { message = "User deleted successfully." });
+        })
+        .WithName("DeleteUserInfo")
+        .WithOpenApi();
+
+        app.Run();
     }
-    return Results.Ok(user);
-})
-.WithName("GetUserInfo")
-.WithOpenApi();
 
-app.MapPost("/userinfo", async (User newUserDTO, UserRepository repository) =>
-{
-    // Validate required fields
-    if (string.IsNullOrWhiteSpace(newUserDTO.Email))
+    static string GenerateJwtToken(User user, IConfiguration config)
     {
-        return Results.BadRequest(new { message = "Email is required." });
-    }
-    if (string.IsNullOrWhiteSpace(newUserDTO.FirstName) || string.IsNullOrWhiteSpace(newUserDTO.LastName))
-    {
-        return Results.BadRequest(new { message = "First name and last name are required." });
-    }
+        var jwtSettings = config.GetSection("JwtSettings");
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Secret"]));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-    // Create a new user object
-    var user = new User
-    {
-        FirstName = newUserDTO.FirstName,
-        LastName = newUserDTO.LastName,
-        Email = newUserDTO.Email,
-        PasswordHash = HashPassword(newUserDTO.PasswordHash), // Implement a method to hash the password
-        Issue = newUserDTO.Issue
-    };
+        var claims = new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
 
-    await repository.AddOrUpdateUserAsync(user);
-    return Results.Ok(user);
-})
-.WithName("UpdateOrCreateUserInfo")
-.WithOpenApi();
+        var token = new JwtSecurityToken(
+            issuer: jwtSettings["Issuer"],
+            audience: jwtSettings["Audience"],
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings["ExpiryMinutes"])),
+            signingCredentials: creds);
 
-// Endpoint for serving specific site images
-app.MapGet("/siteimages/{img}", (string img) =>
-{
-    var filePath = Path.Combine(app.Environment.WebRootPath, "images", $"{img}.jpeg");
-
-    if (!System.IO.File.Exists(filePath))
-    {
-        return Results.NotFound(new { message = "Image not found" });
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    var fileBytes = System.IO.File.ReadAllBytes(filePath);
-    return Results.File(fileBytes, "image/jpeg");
-})
-.WithName("GetSiteImages")
-.WithOpenApi();
-
-// Endpoint for About Us page text
-app.MapGet("/aboutus", () =>
-{
-    var aboutUsInfo = new AboutUs(
-        "Step into The Zen Den and embark on a journey of relaxation and self-discovery. Let us pamper you with our luxurious treatments and serene ambiance, leaving you feeling refreshed, revitalized, and ready to face the world anew.",
-        "Rediscover your energy and vitality with treatments designed to replenish your mind and body, leaving you feeling renewed and ready to take on the day.",
-        "Unwind in our tranquil oasis where soothing massages and calming aromatherapy create a peaceful atmosphere, helping you melt away tension and stress.",
-        "Experience the transformative power of our holistic treatments and wellness rituals, designed to restore balance and enhance your overall well-being, leaving you feeling youthful and revitalized.",
-        "Awaken your senses and revitalize your skin with refreshing facials and therapies that cleanse and invigorate, giving your complexion a radiant glow."
-    );
-    return Results.Ok(aboutUsInfo);
-})
-.WithName("GetAboutUs")
-.WithOpenApi();
-
-// User registration endpoint
-app.MapPost("/register", async (User newUserDTO, UserRepository repository) =>
-{
-    if (string.IsNullOrWhiteSpace(newUserDTO.Email) || string.IsNullOrWhiteSpace(newUserDTO.PasswordHash))
+    static string HashPassword(string password)
     {
-        return Results.BadRequest(new { message = "Email and password are required." });
+        return BCrypt.Net.BCrypt.HashPassword(password);
     }
 
-    var existingUser = await repository.GetUserByEmailAsync(newUserDTO.Email);
-    if (existingUser != null)
+    static bool VerifyPassword(string password, string hashedPassword)
     {
-        return Results.BadRequest(new { message = "User already exists." });
+        return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
     }
-
-    var user = new User
-    {
-        FirstName = newUserDTO.FirstName,
-        LastName = newUserDTO.LastName,
-        Email = newUserDTO.Email,
-        PasswordHash = HashPassword(newUserDTO.PasswordHash),
-        Issue = newUserDTO.Issue
-    };
-
-    await repository.AddOrUpdateUserAsync(user);
-    return Results.Ok(new { message = "User registered successfully." });
-})
-.WithName("RegisterUser")
-.WithOpenApi();
-
-// User login endpoint
-app.MapPost("/login", async (LoginDTO loginDTO, UserRepository repository, IConfiguration config) =>
-{
-    var user = await repository.GetUserByEmailAsync(loginDTO.Email);
-    if (user == null || !VerifyPassword(loginDTO.Password, user.PasswordHash))
-    {
-        return Results.Unauthorized();
-    }
-
-    var token = GenerateJwtToken(user, config);
-    return Results.Ok(new { token });
-})
-.WithName("LoginUser")
-.WithOpenApi();
-
-// Modify user endpoint
-app.MapPut("/userinfo/{email}", [Authorize] async (string email, User updatedUserDTO, UserRepository repository) =>
-{
-    var user = await repository.GetUserByEmailAsync(email);
-    if (user == null)
-    {
-        return Results.NotFound(new { message = "User not found" });
-    }
-
-    user.FirstName = updatedUserDTO.FirstName;
-    user.LastName = updatedUserDTO.LastName;
-    user.Email = updatedUserDTO.Email;
-    if (!string.IsNullOrWhiteSpace(updatedUserDTO.PasswordHash))
-    {
-        user.PasswordHash = HashPassword(updatedUserDTO.PasswordHash);
-    }
-    user.Issue = updatedUserDTO.Issue;
-
-    await repository.AddOrUpdateUserAsync(user);
-    return Results.Ok(new { message = "User updated successfully." });
-})
-.WithName("ModifyUserInfo")
-.WithOpenApi();
-
-// Delete user endpoint
-app.MapDelete("/userinfo/{email}", [Authorize] async (string email, UserRepository repository) =>
-{
-    var user = await repository.GetUserByEmailAsync(email);
-    if (user == null)
-    {
-        return Results.NotFound(new { message = "User not found" });
-    }
-
-    await repository.DeleteUserAsync(email);
-    return Results.Ok(new { message = "User deleted successfully." });
-})
-.WithName("DeleteUserInfo")
-.WithOpenApi();
-
-app.Run();
-
-string GenerateJwtToken(User user, IConfiguration config)
-{
-    var jwtSettings = config.GetSection("JwtSettings");
-    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Secret"]));
-    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-    var claims = new[]
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    };
-
-    var token = new JwtSecurityToken(
-        issuer: jwtSettings["Issuer"],
-        audience: jwtSettings["Audience"],
-        claims: claims,
-        expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings["ExpiryMinutes"])),
-        signingCredentials: creds);
-
-    return new JwtSecurityTokenHandler().WriteToken(token);
-}
-
-string HashPassword(string password)
-{
-    return BCrypt.Net.BCrypt.HashPassword(password);
-}
-
-bool VerifyPassword(string password, string hashedPassword)
-{
-    return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
 }
 
 public class AboutUs
@@ -309,8 +318,10 @@ public class LoginDTO
 
 public class JwtSettings
 {
-    public string Secret { get; set; }
-    public string Issuer { get; set; }
-    public string Audience { get; set; }
+    public string? Secret { get; set; }
+    public string? Issuer { get; set; }
+    public string? Audience { get; set; }
     public int ExpiryMinutes { get; set; }
 }
+
+
