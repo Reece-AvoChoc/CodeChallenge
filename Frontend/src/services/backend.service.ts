@@ -15,4 +15,28 @@ export class BackendService {
       responseType: 'blob',
     });
   }
+
+  getAppleImage(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/api/home/appleimage`, {
+      responseType: 'blob',
+    });
+  }
+
+  getWindowsImage(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/api/home/windowsimage`, {
+      responseType: 'blob',
+    });
+  }
+
+  getMac(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/api/home/macbook`, {
+      responseType: 'blob',
+    });
+  }
+
+  getLaptop(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/api/home/laptop`, {
+      responseType: 'blob',
+    });
+  }
 }

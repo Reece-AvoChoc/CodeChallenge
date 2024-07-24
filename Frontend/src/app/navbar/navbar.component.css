@@ -15,7 +15,7 @@
 }
 
 .title {
-    color: #3f0707;
+    color: #000000;
     margin: 0;
     font-size: 30px;
 }
@@ -42,7 +42,7 @@
 }
 
 .navbar__links li a {
-    color: #333;
+    color: #000000;
     text-decoration: none;
     padding: 10px;
 }
@@ -67,5 +67,5 @@
 
 .navbar__button .button:hover {
     background-color: #fff;
-    color: #333;
+    color: #000000;
 }

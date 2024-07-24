@@ -1,0 +1,11 @@
+<div class="home-container">
+    <div *ngIf="backgroundImageUrl" class="background-image-container">
+        <img [src]="backgroundImageUrl" alt="Background Image" />
+    </div>
+    
+    <div class="cards-container">
+        <div class="card-column" *ngFor="let card of cards">
+            <app-popup-card [cardDetails]="card"></app-popup-card>
+        </div>
+    </div>
+</div>
