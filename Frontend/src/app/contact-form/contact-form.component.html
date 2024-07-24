@@ -1,70 +1,80 @@
-<form [formGroup]="contactForm" (ngSubmit)="onSubmit()" @scaleIn>
-  <div>
-    <label for="name">Name:</label>
-    <input id="name" formControlName="name" type="text" />
-    <div
-      *ngIf="
-        contactForm.controls['name'].invalid &&
-        (contactForm.controls['name'].dirty ||
-          contactForm.controls['name'].touched)
-      "
-    >
-      <div *ngIf="contactForm.controls['name'].errors?.['required']">
-        Name is required.
-      </div>
+<div class="overlay">
+  <div class="overlay-content">
+    <div class="title__container">
+      <p class="title">LUXE LIVING ESTATES</p>
+      <p class="subtitle">REAL ESTATE AGENCY</p>
     </div>
-  </div>
-
-  <div>
-    <label for="surname">Surname:</label>
-    <input id="surname" formControlName="surname" type="text" />
-    <div
-      *ngIf="
-        contactForm.controls['surname'].invalid &&
-        (contactForm.controls['surname'].dirty ||
-          contactForm.controls['surname'].touched)
-      "
-    >
-      <div *ngIf="contactForm.controls['surname'].errors?.['required']">
-        Surname is required.
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" @scaleIn>
+      <div>
+        <label for="name">Name:</label>
+        <input id="name" formControlName="name" type="text" />
+        <div
+          *ngIf="
+            contactForm.controls['name'].invalid &&
+            (contactForm.controls['name'].dirty ||
+              contactForm.controls['name'].touched)
+          "
+        >
+          <div *ngIf="contactForm.controls['name'].errors?.['required']">
+            Name is required.
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div>
-    <label for="email">Email:</label>
-    <input id="email" formControlName="email" type="email" />
-    <div
-      *ngIf="
-        contactForm.controls['email'].invalid &&
-        (contactForm.controls['email'].dirty ||
-          contactForm.controls['email'].touched)
-      "
-    >
-      <div *ngIf="contactForm.controls['email'].errors?.['required']">
-        Email is required.
+      <div>
+        <label for="surname">Surname:</label>
+        <input id="surname" formControlName="surname" type="text" />
+        <div
+          *ngIf="
+            contactForm.controls['surname'].invalid &&
+            (contactForm.controls['surname'].dirty ||
+              contactForm.controls['surname'].touched)
+          "
+        >
+          <div *ngIf="contactForm.controls['surname'].errors?.['required']">
+            Surname is required.
+          </div>
+        </div>
       </div>
-      <div *ngIf="contactForm.controls['email'].errors?.['email']">
-        Enter a valid email.
-      </div>
-    </div>
-  </div>
 
-  <div>
-    <label for="request">Request:</label>
-    <textarea id="request" formControlName="request"></textarea>
-    <div
-      *ngIf="
-        contactForm.controls['request'].invalid &&
-        (contactForm.controls['request'].dirty ||
-          contactForm.controls['request'].touched)
-      "
-    >
-      <div *ngIf="contactForm.controls['request'].errors?.['required']">
-        Request is required.
+      <div>
+        <label for="email">Email:</label>
+        <input id="email" formControlName="email" type="email" />
+        <div
+          *ngIf="
+            contactForm.controls['email'].invalid &&
+            (contactForm.controls['email'].dirty ||
+              contactForm.controls['email'].touched)
+          "
+        >
+          <div *ngIf="contactForm.controls['email'].errors?.['required']">
+            Email is required.
+          </div>
+          <div *ngIf="contactForm.controls['email'].errors?.['email']">
+            Enter a valid email.
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <button type="submit" [disabled]="contactForm.invalid">Submit</button>
-</form>
+      <div>
+        <label for="request">Request:</label>
+        <textarea id="request" formControlName="request"></textarea>
+        <div
+          *ngIf="
+            contactForm.controls['request'].invalid &&
+            (contactForm.controls['request'].dirty ||
+              contactForm.controls['request'].touched)
+          "
+        >
+          <div *ngIf="contactForm.controls['request'].errors?.['required']">
+            Request is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <button type="submit" [disabled]="contactForm.invalid">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
