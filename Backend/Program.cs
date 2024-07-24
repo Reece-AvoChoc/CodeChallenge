@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -200,7 +201,7 @@ app.MapPost("/login", async (LoginDTO loginDTO, UserRepository repository, IConf
     var user = await repository.GetUserByEmailAsync(loginDTO.Email);
     if (user == null || !VerifyPassword(loginDTO.Password, user.PasswordHash))
     {
-        return Results.Unauthorized(new { message = "Invalid credentials." });
+        return Results.Unauthorized();
     }
 
     var token = GenerateJwtToken(user, config);
@@ -302,6 +303,14 @@ public class AboutUs
 
 public class LoginDTO
 {
-    public string Email { get; set; }
-    public string Password { get; set; }
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+}
+
+public class JwtSettings
+{
+    public string Secret { get; set; }
+    public string Issuer { get; set; }
+    public string Audience { get; set; }
+    public int ExpiryMinutes { get; set; }
 }

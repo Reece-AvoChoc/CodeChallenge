@@ -1,44 +1,42 @@
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using System.Data;
+using Dapper;
 
 namespace Backend.Data
 {
     public class UserRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDbConnection _dbConnection;
 
-        public UserRepository(ApplicationDbContext context)
+        public UserRepository(IDbConnection dbConnection)
         {
-            _context = context;
+            _dbConnection = dbConnection;
         }
 
-        public async Task<User> GetUserByEmailAsync(string email)
+        public async Task<User?> GetUserByEmailAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var query = "SELECT * FROM Users WHERE Email = @Email";
+            return await _dbConnection.QueryFirstOrDefaultAsync<User>(query, new { Email = email });
         }
 
         public async Task AddOrUpdateUserAsync(User user)
         {
-            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
-
-            if (existingUser == null)
-            {
-                _context.Users.Add(user);
-            }
-            else
-            {
-                existingUser.FirstName = user.FirstName;
-                existingUser.LastName = user.LastName;
-                existingUser.PasswordHash = user.PasswordHash;
-                existingUser.Issue = user.Issue;
-            }
-
-            await _context.SaveChangesAsync();
+            var query = @"
+                INSERT INTO Users (FirstName, LastName, Email, PasswordHash, Issue)
+                VALUES (@FirstName, @LastName, @Email, @PasswordHash, @Issue)
+                ON CONFLICT (Email) 
+                DO UPDATE SET 
+                    FirstName = EXCLUDED.FirstName,
+                    LastName = EXCLUDED.LastName,
+                    PasswordHash = EXCLUDED.PasswordHash,
+                    Issue = EXCLUDED.Issue;";
+            await _dbConnection.ExecuteAsync(query, user);
         }
 
-        public async Task<bool> AnyUsersAsync()
+        public async Task<bool> DeleteUserAsync(string email)
         {
-            return await _context.Users.AnyAsync();
+            var query = "DELETE FROM Users WHERE Email = @Email";
+            var result = await _dbConnection.ExecuteAsync(query, new { Email = email });
+            return result > 0;
         }
     }
 }
