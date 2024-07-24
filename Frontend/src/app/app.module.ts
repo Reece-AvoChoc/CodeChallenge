@@ -13,6 +13,7 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LogInPromptComponent } from './log-in-prompt/log-in-prompt.component';
 import { LoginService } from './login.service';
+import { AddUserComponent } from './add-user/add-user.component';
 
 const routes: Routes = [
   { path: 'home', component: HomePage },
@@ -29,6 +30,7 @@ const routes: Routes = [
     AboutPage,
     NavbarComponent,
     LogInPromptComponent,
+    AddUserComponent,
   ],
   imports: [
     BrowserModule,

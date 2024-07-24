@@ -1,0 +1,28 @@
+<div class="overlay" *ngIf="isVisible">
+  <div class="overlay-content">
+    <div class="title__container">
+      <p class="title">LUXE LIVING ESTATES</p>
+      <p class="subtitle">REAL ESTATE AGENCY</p>
+    </div>
+    <form [formGroup]="AddUserForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" formControlName="username" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" formControlName="email" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          required
+        />
+      </div>
+      <button type="submit" [disabled]="!AddUserForm.valid">Login</button>
+    </form>
+  </div>
+</div>
