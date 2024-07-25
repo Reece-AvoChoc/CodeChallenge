@@ -1,1 +1,37 @@
-<p>edit-user works!</p>
+<div class="overlay" *ngIf="user">
+  <div class="overlay-content">
+    <div class="title__container">
+      <p class="title">LUXE LIVING ESTATES</p>
+      <p class="subtitle">REAL ESTATE AGENCY</p>
+    </div>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input id="name" [(ngModel)]="user.name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input
+          id="email"
+          [(ngModel)]="user.email"
+          name="email"
+          type="email"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input
+          id="password"
+          [(ngModel)]="user.password"
+          name="password"
+          required
+        />
+      </div>
+      <div class="button-container">
+        <button type="submit">Save</button>
+        <button type="button" (click)="closeModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of testUsers">
+      <tr *ngFor="let user of testUsers" (click)="openModal(user)">
         <td>{{ user.id }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.email }}</td>
@@ -18,3 +18,11 @@
     </tbody>
   </table>
 </div>
+
+<app-edit-user
+  *ngIf="selectedUser"
+  [user]="selectedUser"
+  (save)="saveUser($event)"
+  (close)="closeModal()"
+>
+</app-edit-user>
