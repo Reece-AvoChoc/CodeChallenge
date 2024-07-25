@@ -14,12 +14,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LogInPromptComponent } from './log-in-prompt/log-in-prompt.component';
 import { LoginService } from './login.service';
 import { AddUserComponent } from './add-user/add-user.component';
+import { UserListComponent } from './user-list/user-list.component';
 
 const routes: Routes = [
   { path: 'home', component: HomePage },
   { path: 'about', component: AboutPage },
   { path: 'error', component: ErrorPage },
   { path: 'form', component: ContactFormComponent },
+  { path: 'users', component: UserListComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 
