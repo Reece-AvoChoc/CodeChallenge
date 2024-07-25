@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-contact-form',
@@ -22,7 +23,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class ContactFormComponent {
   contactForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
       surname: ['', Validators.required],
@@ -35,5 +36,10 @@ export class ContactFormComponent {
     if (this.contactForm.valid) {
       console.log(this.contactForm.value);
     }
+  }
+
+  closeModal() {
+    this.contactForm.reset();
+    this.router.navigate(['/']);
   }
 }
