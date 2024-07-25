@@ -1,60 +1,80 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private isAuthenticated = false;
-  private users = new Map<string, { email: string; password: string }>();
+  private apiUrl = 'http://api-url.com'; //TODO KUNO
+  private tokenKey = 'authToken';
+  private currentUserSubject: BehaviorSubject<any>;
+  public currentUser: Observable<any>;
 
-  constructor() {}
-
-  login(email: string, password: string) {
-    const user = this.users.get(email);
-    if (user && user.password === password) {
-      this.isAuthenticated = true;
-      // Additional login logic
-    } else {
-      alert('Invalid email or password');
-    }
+  constructor(private http: HttpClient, private router: Router) {
+    const token = localStorage.getItem(this.tokenKey);
+    this.currentUserSubject = new BehaviorSubject<any>(token);
+    this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  signup(email: string, password: string) {
-    if (this.users.has(email)) {
-      alert('Email already registered');
-      return;
-    }
-    this.users.set(email, { email, password });
-    this.isAuthenticated = true;
-    // Additional signup logic
+  public get currentUserValue(): any {
+    return this.currentUserSubject.value;
+  }
+
+  login(email: string, password: string): Observable<any> {
+    return this.http
+      .post<any>(`${this.apiUrl}/login`, { email, password })
+      .pipe(
+        map((user) => {
+          if (user && user.token) {
+            localStorage.setItem(this.tokenKey, user.token);
+            this.currentUserSubject.next(user.token);
+          }
+          return user;
+        })
+      );
+  }
+
+  signup(email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/signup`, { email, password });
+  }
+
+  editUser(newEmail: string, newPassword: string): Observable<any> {
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      `Bearer ${this.currentUserValue}`
+    );
+    return this.http.put<any>(
+      `${this.apiUrl}/edit-user`,
+      { newEmail, newPassword },
+      { headers }
+    );
+  }
+
+  deleteUser(): Observable<any> {
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      `Bearer ${this.currentUserValue}`
+    );
+    return this.http
+      .delete<any>(`${this.apiUrl}/delete-user`, { headers })
+      .pipe(
+        map((response) => {
+          this.logout();
+          return response;
+        })
+      );
   }
 
   logout() {
-    this.isAuthenticated = false;
-    // Additional logout logic
+    localStorage.removeItem(this.tokenKey);
+    this.currentUserSubject.next(null);
+    this.router.navigate(['/']);
   }
 
-  deleteUser() {
-    // Assuming a currentUser property or similar to track logged in user
-    const currentUser = 'currentUser@example.com'; // Replace with actual logic
-    this.users.delete(currentUser);
-    this.isAuthenticated = false;
-    // Additional delete user logic
-  }
-
-  editUser(newEmail: string, newPassword: string) {
-    // Assuming a currentUser property or similar to track logged in user
-    const currentUser = 'currentUser@example.com'; // Replace with actual logic
-    const user = this.users.get(currentUser);
-    if (user) {
-      if (newEmail) user.email = newEmail;
-      if (newPassword) user.password = newPassword;
-      this.users.set(currentUser, user);
-    }
-    // Additional edit user logic
-  }
-
-  isLoggedIn() {
-    return this.isAuthenticated;
+  isAuthenticated(): boolean {
+    return !!this.currentUserValue;
   }
 }

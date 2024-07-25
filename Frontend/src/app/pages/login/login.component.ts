@@ -16,7 +16,13 @@ export class LoginComponent {
   ) {}
 
   onSubmit() {
-    this.authService.login(this.email, this.password);
-    this.dialogRef.close();
+    this.authService.login(this.email, this.password).subscribe(
+      () => {
+        this.dialogRef.close();
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 }
