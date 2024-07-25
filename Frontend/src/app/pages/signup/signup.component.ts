@@ -18,10 +18,16 @@ export class SignupComponent {
 
   onSubmit() {
     if (this.password !== this.confirmPassword) {
-      alert('Passwords do not match');
+      console.error('Passwords do not match');
       return;
     }
-    this.authService.signup(this.email, this.password);
-    this.dialogRef.close();
+    this.authService.signup(this.email, this.password).subscribe(
+      () => {
+        this.dialogRef.close();
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 }

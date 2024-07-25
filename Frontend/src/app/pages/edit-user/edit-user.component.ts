@@ -19,8 +19,14 @@ export class EditUserComponent {
   ) {}
 
   onSubmit() {
-    this.authService.editUser(this.newEmail, this.newPassword);
-    this.dialogRef.close();
+    this.authService.editUser(this.newEmail, this.newPassword).subscribe(
+      () => {
+        this.dialogRef.close();
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 
   openDeleteUser() {

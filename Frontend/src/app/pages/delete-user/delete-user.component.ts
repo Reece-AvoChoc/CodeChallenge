@@ -13,10 +13,15 @@ export class DeleteUserComponent {
   ) {}
 
   onDelete() {
-    this.authService.deleteUser();
-    this.dialogRef.close('deleted');
+    this.authService.deleteUser().subscribe(
+      () => {
+        this.dialogRef.close('deleted');
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
-
   onCancel() {
     this.dialogRef.close();
   }

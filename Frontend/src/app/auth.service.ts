@@ -8,19 +8,24 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://api-url.com'; //TODO KUNO
+  private apiUrl = 'http://apiGoesHere'; // TODO KUNO
   private tokenKey = 'authToken';
-  private currentUserSubject: BehaviorSubject<any>;
-  public currentUser: Observable<any>;
+  private currentUserSubject: BehaviorSubject<string | null>;
+  public currentUser: Observable<string | null>;
 
   constructor(private http: HttpClient, private router: Router) {
     const token = localStorage.getItem(this.tokenKey);
-    this.currentUserSubject = new BehaviorSubject<any>(token);
+    this.currentUserSubject = new BehaviorSubject<string | null>(token);
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): any {
+  public get currentUserValue(): string | null {
     return this.currentUserSubject.value;
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.currentUserValue;
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   login(email: string, password: string): Observable<any> {
@@ -42,10 +47,7 @@ export class AuthService {
   }
 
   editUser(newEmail: string, newPassword: string): Observable<any> {
-    const headers = new HttpHeaders().set(
-      'Authorization',
-      `Bearer ${this.currentUserValue}`
-    );
+    const headers = this.getAuthHeaders();
     return this.http.put<any>(
       `${this.apiUrl}/edit-user`,
       { newEmail, newPassword },
@@ -54,10 +56,7 @@ export class AuthService {
   }
 
   deleteUser(): Observable<any> {
-    const headers = new HttpHeaders().set(
-      'Authorization',
-      `Bearer ${this.currentUserValue}`
-    );
+    const headers = this.getAuthHeaders();
     return this.http
       .delete<any>(`${this.apiUrl}/delete-user`, { headers })
       .pipe(
