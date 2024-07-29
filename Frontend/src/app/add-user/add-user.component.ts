@@ -39,7 +39,6 @@ export class AddUserComponent {
           },
           (error) => {
             console.error('Registration failed', error);
-            this.registrationSuccess.emit();
           }
         );
     }
