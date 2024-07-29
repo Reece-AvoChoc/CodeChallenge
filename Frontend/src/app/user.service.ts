@@ -15,16 +15,15 @@ export class UserService {
     return this.http.get<User[]>(this.userUrl);
   }
 
-  deleteUser(userId: number) {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.http.delete(`${this.userUrl}/${userId}`).subscribe(
-        () => {
-          this.getAllUsers();
-        },
-        (error) => {
-          console.error('Error deleting user:', error);
-        }
-      );
-    }
+  deleteUser(userId: number): Observable<void> {
+    return this.http.delete<void>(`${this.userUrl}/${userId}`);
+  }
+
+  updateUser(user: User): Observable<User> {
+    return this.http.put<User>(`${this.userUrl}/${user.id}`, {
+      Username: user.name,
+      Email: user.email,
+      Password: user.password,
+    });
   }
 }

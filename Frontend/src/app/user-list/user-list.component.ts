@@ -18,37 +18,52 @@ export class UserListComponent implements OnInit {
   constructor(private UserService: UserService) {}
 
   ngOnInit(): void {
-    this.UserService.getAllUsers();
+    this.UserService.getAllUsers().subscribe((users: User[]) => {
+      this.Users = users;
+    });
   }
 
-  testUsers: User[] = [
-    {
-      id: 1,
-      name: 'John',
-      email: 'fake@email.com',
-      password: 'password',
-    },
-    {
-      id: 2,
-      name: 'Jane',
-      email: 'fake2@email.com',
-      password: 'password',
-    },
-  ];
+  //   testUsers: User[] = [
+  //     {
+  //       id: 1,
+  //       name: 'John',
+  //       email: 'fake@email.com',
+  //       password: 'password',
+  //     },
+  //     {
+  //       id: 2,
+  //       name: 'Jane',
+  //       email: 'fake2@email.com',
+  //       password: 'password',
+  //     },
+  //   ];
 
   openModal(user: User) {
     this.selectedUser = { ...user };
   }
 
   saveUser(user: User) {
-    const index = this.testUsers.findIndex((u) => u.id === user.id);
+    const index = this.Users.findIndex((u) => u.id === user.id);
     if (index !== -1) {
-      this.testUsers[index] = user;
+      this.Users[index] = user;
     }
     this.closeModal();
   }
 
   closeModal() {
     this.selectedUser = null;
+  }
+
+  deleteUser(userId: number) {
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.UserService.deleteUser(userId).subscribe(
+        () => {
+          this.Users = this.Users.filter((user) => user.id !== userId);
+        },
+        (error) => {
+          console.error('Error deleting user:', error);
+        }
+      );
+    }
   }
 }

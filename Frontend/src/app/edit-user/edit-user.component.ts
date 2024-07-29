@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../user.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-edit-user',
@@ -14,12 +16,21 @@ export class EditUserModalComponent {
   @Output() save = new EventEmitter<any>();
   @Output() close = new EventEmitter<void>();
 
+  constructor(private userService: UserService) {}
+
   closeModal() {
     this.close.emit();
   }
 
   onSubmit() {
-    this.save.emit(this.user);
-    this.closeModal();
+    this.userService.updateUser(this.user).subscribe(
+      (updatedUser) => {
+        this.save.emit(updatedUser);
+        this.closeModal();
+      },
+      (error) => {
+        console.error('Error updating user:', error);
+      }
+    );
   }
 }

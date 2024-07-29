@@ -13,22 +13,21 @@ export class LogInPromptComponent {
 
   constructor(private fb: FormBuilder, private loginService: LoginService) {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
   }
+
   onSubmit() {
     if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
-      this.loginService.login(username, password).subscribe(
+      const { email, password } = this.loginForm.value;
+      this.loginService.login(email, password).subscribe(
         (response) => {
-          console.log('details: ', username, password);
           console.log('Login successful', response);
           this.isVisible = false;
         },
         (error) => {
           console.error('Login failed', error);
-          this.isVisible = false;
         }
       );
     }

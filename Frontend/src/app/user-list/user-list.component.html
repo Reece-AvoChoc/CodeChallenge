@@ -10,13 +10,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of testUsers" (click)="openModal(user)">
+      <tr *ngFor="let user of Users" (click)="openModal(user)">
         <td>{{ user.id }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.password }}</td>
         <td>
-          <button>Delete</button>
+          <button (click)="deleteUser(user.id); $event.stopPropagation()">
+            Delete
+          </button>
         </td>
       </tr>
     </tbody>
