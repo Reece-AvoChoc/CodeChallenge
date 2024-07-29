@@ -8,6 +8,7 @@ import { User } from './models/user';
 })
 export class UserService {
   private userUrl = 'http://localhost:5198/api/user';
+  private registerUrl = `${this.userUrl}/register`;
 
   constructor(private http: HttpClient) {}
 
@@ -17,6 +18,21 @@ export class UserService {
 
   deleteUser(userId: number): Observable<void> {
     return this.http.delete<void>(`${this.userUrl}/${userId}`);
+  }
+
+  registerUser(
+    username: string,
+    email: string,
+    password: string,
+    confirmPassword: string
+  ): Observable<any> {
+    const body = {
+      Username: username,
+      Email: email,
+      Password: password,
+      ConfirmPassword: confirmPassword,
+    };
+    return this.http.post<any>(this.registerUrl, body);
   }
 
   updateUser(user: User): Observable<User> {

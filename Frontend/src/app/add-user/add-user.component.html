@@ -1,9 +1,9 @@
-<div class="overlay" *ngIf="isVisible">
+<div class="overlay">
   <div class="overlay-content">
     <div class="title__container">
       <p class="title">LUXE LIVING ESTATES</p>
       <p class="subtitle">REAL ESTATE AGENCY</p>
-      <p>Sign Up</p>
+      <p class="subtitle2">CREATE NEW USER</p>
     </div>
     <form [formGroup]="AddUserForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
@@ -23,7 +23,18 @@
           required
         />
       </div>
-      <button type="submit" [disabled]="!AddUserForm.valid">Login</button>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          required
+        />
+      </div>
+      <div class="button-container">
+        <button type="submit" [disabled]="!AddUserForm.valid">Sign Up</button>
+      </div>
     </form>
   </div>
 </div>

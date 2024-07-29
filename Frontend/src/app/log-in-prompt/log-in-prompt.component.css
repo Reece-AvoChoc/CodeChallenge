@@ -73,6 +73,7 @@ button {
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
+  margin-top: 0.8em;
   transition: background 0.3s ease;
 }
 

@@ -19,6 +19,11 @@
         />
       </div>
       <button type="submit" [disabled]="!loginForm.valid">Login</button>
+      <button type="button" (click)="toggleSignUp()">Sign Up</button>
     </form>
+    <app-add-user
+      *ngIf="showSignUp"
+      (registrationSuccess)="onRegistrationSuccess()"
+    ></app-add-user>
   </div>
 </div>

@@ -10,6 +10,7 @@ import { LoginService } from '../login.service';
 export class LogInPromptComponent {
   loginForm: FormGroup;
   isVisible: boolean = true;
+  showSignUp: boolean = false;
 
   constructor(private fb: FormBuilder, private loginService: LoginService) {
     this.loginForm = this.fb.group({
@@ -31,5 +32,13 @@ export class LogInPromptComponent {
         }
       );
     }
+  }
+
+  toggleSignUp() {
+    this.showSignUp = !this.showSignUp;
+  }
+
+  onRegistrationSuccess() {
+    this.showSignUp = false;
   }
 }
